@@ -123,9 +123,9 @@ export default function Home() {
                   Меню навігації сайту з посиланнями на основні розділи та
                   контактною інформацією
                 </SheetDescription>
-                <div className="flex flex-col space-y-6 mt-6">
+                <div className="flex flex-col space-y-6">
                   {/* Logo */}
-                  <div className="pb-4 border-b border-border">
+                  <div className="pb-3 border-b border-border">
                     <Image
                       src="https://ext.same-assets.com/3961209986/148758430.svg"
                       alt="Nikoletta Martynovych Logo"
@@ -185,7 +185,7 @@ export default function Home() {
                   </div>
 
                   {/* Social Links */}
-                  <div className="flex flex-col space-y-4 pt-4">
+                  <div className="flex flex-col space-y-4">
                     <a
                       href="https://www.instagram.com/nikush_brows"
                       target="_blank"
@@ -239,7 +239,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
             <div>
-              <h1 className="text-5xl lg:text-6xl font-forum text-foreground mb-6 leading-tight">
+              <h1 className="text-4.5xl lg:text-6xl font-forum text-foreground mb-6 leading-tight">
                 ПЕРСОНАЛЬНИЙ САЙТ
                 <br />
                 НІКОЛЕТТИ МАРТИНОВИЧ
