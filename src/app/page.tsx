@@ -264,7 +264,7 @@ export default function Home() {
                   className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-3 flex items-center gap-2"
                   onClick={() =>
                     window.open(
-                      "https://www.instagram.com/elena_kanevskaya_",
+                      "https://www.instagram.com/nikush_brows",
                       "_blank"
                     )
                   }
