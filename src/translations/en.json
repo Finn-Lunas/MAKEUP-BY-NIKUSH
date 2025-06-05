@@ -1,0 +1,218 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Author",
+    "courses": "Courses",
+    "instagram": "Instagram",
+    "testimonials": "Reviews",
+    "support": "Support"
+  },
+  "hero": {
+    "title": "NIKOLETTA MARTYNOVYCH PERSONAL WEBSITE",
+    "subtitle": "Want to learn how to do perfect makeup yourself? Take author's makeup courses from Nikoletta Martynovych. All current courses can be found below",
+    "cta": {
+      "contact": "View Courses",
+      "portfolio": "Go to Instagram"
+    }
+  },
+  "about": {
+    "title": "ABOUT AUTHOR",
+    "description": "My name is Nika — I'm a makeup artist with over 6 years of experience in the beauty industry. My passion is to highlight the uniqueness of every woman through makeup. I actively work with clients and teach girls the art of makeup — with love, accessibility, and without complex schemes.",
+    "description2": "I sincerely believe that makeup is not about masks, but about lightness, confidence, and self-care. That's why I teach not only techniques, but also love for the process. Makeup can be simple and bring joy even in everyday routine life.",
+    "description3": "I am the founder and owner of The Beauty Bar beauty studio, where I created a space where everyone can feel special.",
+    "description4": "Professionalism, attention to detail, and genuine support — these are what guide me in my work every day.",
+    "sections": {
+      "intro": "Meet Nika",
+      "philosophy": "Makeup Philosophy",
+      "studio": "The Beauty Bar Studio",
+      "principles": "Work Principles"
+    },
+    "experience": {
+      "years": "Over 6 years of experience",
+      "certified": "Professional makeup artist",
+      "techniques": "Modern makeup techniques",
+      "clients": "Owner of The Beauty Bar studio"
+    }
+  },
+  "courses": {
+    "title": "COURSES FROM NIKOLETTA MARTYNOVYCH",
+    "subtitle": "Learn Professional Makeup Techniques",
+    "description": "Makeup for Yourself — Easy and with Love is a mini-course created for girls who want to learn how to do beautiful, quick makeup without unnecessary complications.",
+    "description2": "I will show you how to do daily and evening makeup, tell you about choosing cosmetics, and share simple techniques that are easy to repeat.",
+    "description3": "This course is about care, confidence, and pleasure from every brush stroke.",
+    "general": {
+      "makeup_types": "✨ Day makeup – light, natural, emphasizes your beauty.\n✨ Evening makeup with eye accent - eyeliner, expressive, spectacular, perfect for special occasions.",
+      "what_awaits": "What awaits you?",
+      "features": [
+        "Step-by-step video tutorials with detailed explanations",
+        "Brush analysis and basic cosmetics recommendations",
+        "Skin preparation presentation",
+        "In the extended plan - Analysis of your cosmetics bag + personal recommendations and support"
+      ],
+      "format": "Format: private Telegram channel",
+      "access": "Access to materials – at your convenient time / forever",
+      "pricing_title": "Price:"
+    },
+    "basic": {
+      "title": "Basic Package",
+      "price": "$23",
+      "duration": "18+ hours",
+      "description": "Perfect for those who want to learn makeup from scratch or refresh their knowledge.",
+      "beforeAfter": "Before & After",
+      "watchVideo": "Watch Video",
+      "features": {
+        "basics": "Makeup basics",
+        "tools": "Tools and cosmetics",
+        "techniques": "Basic techniques",
+        "videos": "Over 100 video lessons",
+        "hours": "More than 18 hours of educational content",
+        "support": "Support from the course author"
+      },
+      "cta": "Buy",
+      "details": "Details",
+      "popup": {
+        "title": "\"Basic\" Package — $23",
+        "description": "Perfect for those who want to learn makeup from scratch or refresh their knowledge.",
+        "whatYouGet": "What's included:",
+        "features": [
+          "2 complete video tutorials: day and evening makeup",
+          "Step-by-step explanation of all stages",
+          "Skin preparation presentation",
+          "Basic cosmetics bag recommendations",
+          "Access to private Telegram channel with course materials"
+        ],
+        "bonus": "❤️‍🔥 + bonus for everyone: my personal recommendations and mini video tutorial on how to style trendy curtain bangs"
+      }
+    },
+    "advanced": {
+      "title": "Premium Package",
+      "price": "$30",
+      "duration": "Additional content",
+      "popular": "Popular",
+      "description": "For those who want maximum benefit and personalized approach.",
+      "beforeAfter": "Before & After",
+      "watchVideo": "Watch Video",
+      "features": {
+        "professional": "Professional techniques",
+        "advanced": "Complex looks",
+        "portfolio": "Portfolio creation",
+        "certificate": "Certificate",
+        "skinTypes": "Working with different skin types",
+        "ageGroups": "Features of working with different age groups"
+      },
+      "cta": "Buy",
+      "details": "Details",
+      "popup": {
+        "title": "💎 \"Premium\" Package — $30",
+        "description": "For those who want maximum benefit and personalized approach.",
+        "whatYouGet": "Everything from the basic package, plus:",
+        "features": [
+          "Analysis of your cosmetics — what to keep and what to replace",
+          "My personal recommendations for products specifically for you",
+          "Answers to your questions in voice or text format"
+        ]
+      }
+    },
+    "vip": {
+      "title": "VIP Course",
+      "price": "$45",
+      "duration": "Course bundle",
+      "features": {
+        "individual": "Individual lessons",
+        "schedule": "Flexible schedule",
+        "support": "Post-course support",
+        "materials": "All materials included"
+      },
+      "cta": "Buy"
+    }
+  },
+  "faq": {
+    "title": "CUSTOMER SUPPORT",
+    "subtitle": "Frequently asked questions",
+    "questions": {
+      "beginner": {
+        "question": "Will the course suit me if I don't know how to do makeup at all?",
+        "answer": "Yes! The course is specially created for both beginners and girls who already do makeup but still have questions — everything is explained simply and step by step."
+      },
+      "products": {
+        "question": "What products will I need for learning?",
+        "answer": "The course includes a presentation with a basic cosmetics list. I also give recommendations on how to adapt the lessons to the products you already have."
+      },
+      "minimal": {
+        "question": "What if I have minimal cosmetics?",
+        "answer": "That's not a problem. I'll show you how to do makeup even with a minimal set. And in the \"Premium\" package, I'll also help you select products within your budget."
+      },
+      "duration": {
+        "question": "How long will it take to complete the course?",
+        "answer": "The course consists of two lessons. You take it at your own pace — you'll have access to all materials, so you can watch anytime."
+      },
+      "access": {
+        "question": "How long will I have access to the lessons?",
+        "answer": "Course access is forever. You can return to it anytime."
+      },
+      "premium": {
+        "question": "How does the \"Premium\" package differ?",
+        "answer": "In it, you'll get my personal support, analysis of your cosmetics bag, and recommendations specifically for you. It's an individual approach and more attention to your needs."
+      },
+      "delivery": {
+        "question": "How will I get access to the course after payment?",
+        "answer": "After payment, you'll receive a link to a private Telegram channel where all lessons and materials will be."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact Me",
+    "subtitle": "Ready to start your makeup journey?",
+    "phone": {
+      "title": "Phone Number"
+    },
+    "email": {
+      "title": "Email"
+    },
+    "instagram": {
+      "title": "Instagram"
+    },
+    "form": {
+      "title": "Write to me",
+      "name": "Your name",
+      "email": "Email",
+      "phone": "Phone",
+      "message": "Message",
+      "send": "Send"
+    }
+  },
+  "footer": {
+    "description": "Professional makeup and training from a certified makeup artist.",
+    "quick_links": "Quick Links",
+    "contact": "Contact",
+    "rights": "All rights reserved."
+  },
+  "instagram": {
+    "title": "NIKOLETTA MARTYNOVYCH INSTAGRAM",
+    "follow": "Follow @nikush_brows"
+  },
+  "testimonials": {
+    "title": "💕 HAPPY CLIENTS REVIEWS 💕",
+    "subtitle": "What girls say after training 🥰",
+    "feedback": [
+      {
+        "image": "/images/feedback/feedback1.PNG",
+        "alt": "Client feedback about makeup course"
+      },
+      {
+        "image": "/images/feedback/feedback2.PNG",
+        "alt": "Client feedback about makeup course"
+      },
+      {
+        "image": "/images/feedback/feedback3.PNG",
+        "alt": "Client feedback about makeup course"
+      },
+      {
+        "image": "/images/feedback/feedback4.PNG",
+        "alt": "Client feedback about makeup course"
+      }
+    ],
+    "description": "✨ Every day I receive such warm words from my students! ✨",
+    "cta": "Join our happy graduates! 💖"
+  }
+}
