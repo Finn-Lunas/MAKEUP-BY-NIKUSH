@@ -7,10 +7,16 @@ import { useLanguage } from "../../../contexts/LanguageContext";
 import { Button } from "../../../components/ui/button";
 import { CheckCircle, MessageCircle, Phone, Mail } from "lucide-react";
 
+// Force dynamic rendering to prevent prerendering errors
+export const dynamic = "force-dynamic";
+
 export default function PaymentSuccessPage() {
   const { t, language } = useLanguage();
   const searchParams = useSearchParams();
-  const orderId = searchParams.get("order_id");
+  const orderId = searchParams?.get("order_id") || null;
+
+  // Fallback if language context is not available
+  const currentLanguage = language || "uk";
 
   const contactInfo = {
     telegram: "@nikush_brows",
@@ -28,14 +34,14 @@ export default function PaymentSuccessPage() {
 
         {/* Success Message */}
         <h1 className="text-3xl font-bold text-gray-900 mb-4">
-          {language === "uk"
+          {currentLanguage === "uk"
             ? "🎉 Оплата пройшла успішно!"
             : "🎉 Payment Successful!"}
         </h1>
 
         <p className="text-lg text-gray-600 mb-8">
-          {language === "uk"
-            ? "Дякуємо за покупку курсу! Незабаром ви отримаете доступ до навчальних матеріалів."
+          {currentLanguage === "uk"
+            ? "Дякуємо за покупку курсу! Незабаром ви отримаєте доступ до навчальних матеріалів."
             : "Thank you for purchasing the course! You will receive access to the learning materials shortly."}
         </p>
 
@@ -43,7 +49,7 @@ export default function PaymentSuccessPage() {
         {orderId && (
           <div className="bg-gray-50 rounded-lg p-4 mb-8">
             <p className="text-sm text-gray-500">
-              {language === "uk" ? "Номер замовлення:" : "Order ID:"}
+              {currentLanguage === "uk" ? "Номер замовлення:" : "Order ID:"}
             </p>
             <p className="font-mono text-sm text-gray-900">{orderId}</p>
           </div>
@@ -52,7 +58,7 @@ export default function PaymentSuccessPage() {
         {/* Next Steps */}
         <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg p-6 mb-8">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">
-            {language === "uk" ? "Що далі?" : "What's Next?"}
+            {currentLanguage === "uk" ? "Що далі?" : "What's Next?"}
           </h2>
 
           <div className="space-y-3 text-left">
@@ -61,7 +67,7 @@ export default function PaymentSuccessPage() {
                 1
               </span>
               <p className="text-gray-700">
-                {language === "uk"
+                {currentLanguage === "uk"
                   ? "Протягом 15 хвилин ви отримаєте повідомлення з посиланням на закритий Telegram-канал"
                   : "Within 15 minutes you will receive a message with a link to the private Telegram channel"}
               </p>
@@ -72,7 +78,7 @@ export default function PaymentSuccessPage() {
                 2
               </span>
               <p className="text-gray-700">
-                {language === "uk"
+                {currentLanguage === "uk"
                   ? "У каналі ви знайдете всі відеоуроки та додаткові матеріали"
                   : "In the channel you will find all video tutorials and additional materials"}
               </p>
@@ -83,7 +89,7 @@ export default function PaymentSuccessPage() {
                 3
               </span>
               <p className="text-gray-700">
-                {language === "uk"
+                {currentLanguage === "uk"
                   ? "Почніть навчання у зручний для вас час - доступ назавжди!"
                   : "Start learning at your convenient time - lifetime access!"}
               </p>
@@ -94,7 +100,7 @@ export default function PaymentSuccessPage() {
         {/* Contact Information */}
         <div className="border-t pt-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            {language === "uk"
+            {currentLanguage === "uk"
               ? "Питання? Зв'яжіться зі мною:"
               : "Questions? Contact me:"}
           </h3>
@@ -114,7 +120,7 @@ export default function PaymentSuccessPage() {
             <a href={`tel:${contactInfo.phone}`}>
               <Button variant="outline" className="w-full sm:w-auto">
                 <Phone className="w-4 h-4 mr-2" />
-                {language === "uk" ? "Телефон" : "Phone"}
+                {currentLanguage === "uk" ? "Телефон" : "Phone"}
               </Button>
             </a>
 
@@ -131,7 +137,9 @@ export default function PaymentSuccessPage() {
         <div className="mt-8">
           <Link href="/">
             <Button className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white">
-              {language === "uk" ? "Повернутися на головну" : "Back to Home"}
+              {currentLanguage === "uk"
+                ? "Повернутися на головну"
+                : "Back to Home"}
             </Button>
           </Link>
         </div>
