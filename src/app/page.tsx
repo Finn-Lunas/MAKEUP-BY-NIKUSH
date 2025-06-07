@@ -6,6 +6,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useLanguage } from "../contexts/LanguageContext";
 import ukTranslations from "../translations/uk.json";
 import enTranslations from "../translations/en.json";
+import LiqPayButton from "../components/LiqPayButton";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -44,6 +45,12 @@ export default function Home() {
   const [showBeforeAfter2, setShowBeforeAfter2] = useState(false);
   const [showVideo1, setShowVideo1] = useState(false);
   const [showVideo2, setShowVideo2] = useState(false);
+  const [imageLoading1, setImageLoading1] = useState(false);
+  const [imageLoading2, setImageLoading2] = useState(false);
+  const [videoLoading1, setVideoLoading1] = useState(false);
+  const [videoLoading2, setVideoLoading2] = useState(false);
+  const [videoProgress1, setVideoProgress1] = useState(0);
+  const [videoProgress2, setVideoProgress2] = useState(0);
   const { language, setLanguage, t } = useLanguage();
 
   const translations = language === "uk" ? ukTranslations : enTranslations;
@@ -513,16 +520,11 @@ export default function Home() {
                   <div className="space-y-2 text-muted-foreground">
                     <p className="flex items-center space-x-2">
                       <span className="text-primary">💄</span>
-                      <span>
-                        900 грн – базовий пакет (всі уроки та матеріали)
-                      </span>
+                      <span>{t("courses.general.basic_pricing")}</span>
                     </p>
                     <p className="flex items-center space-x-2">
                       <span className="text-primary">💄</span>
-                      <span>
-                        1200 грн – розширений пакет (всі уроки + розбір вашої
-                        косметички з моїми персональними рекомендаціями)
-                      </span>
+                      <span>{t("courses.general.advanced_pricing")}</span>
                     </p>
                   </div>
                 </div>
@@ -543,7 +545,10 @@ export default function Home() {
                   />
                   {/* Before/After button - left corner */}
                   <button
-                    onClick={() => setShowBeforeAfter1(true)}
+                    onClick={() => {
+                      setImageLoading1(true);
+                      setShowBeforeAfter1(true);
+                    }}
                     className="absolute top-4 left-4 bg-black/70 text-white px-3 py-2 rounded-lg flex items-center space-x-2 hover:bg-black/80 transition-colors"
                   >
                     <ImageIcon className="h-4 w-4" />
@@ -553,7 +558,10 @@ export default function Home() {
                   </button>
                   {/* Video button - right corner */}
                   <button
-                    onClick={() => setShowVideo1(true)}
+                    onClick={() => {
+                      setVideoLoading1(true);
+                      setShowVideo1(true);
+                    }}
                     className="absolute top-4 right-4 bg-primary/90 text-primary-foreground px-3 py-3 rounded-lg flex items-center space-x-2 hover:bg-primary transition-colors shadow-lg"
                   >
                     <Play className="h-4 w-4" />
@@ -565,9 +573,12 @@ export default function Home() {
                 <p className="text-muted-foreground text-sm mb-4">
                   {t("courses.basic.description")}
                 </p>
-                <Button className="w-full bg-primary hover:bg-accent text-primary-foreground mb-2">
+                <LiqPayButton
+                  courseType="basic"
+                  className="w-full bg-primary hover:bg-accent text-primary-foreground mb-2"
+                >
                   {t("courses.basic.cta")} за {t("courses.basic.price")}
-                </Button>
+                </LiqPayButton>
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button variant="outline" className="w-full">
@@ -608,9 +619,12 @@ export default function Home() {
                         </p>
                       </div>
                       <div className="pt-4">
-                        <Button className="w-full bg-primary hover:bg-accent text-primary-foreground">
+                        <LiqPayButton
+                          courseType="basic"
+                          className="w-full bg-primary hover:bg-accent text-primary-foreground"
+                        >
                           {t("courses.basic.cta")} за {t("courses.basic.price")}
-                        </Button>
+                        </LiqPayButton>
                       </div>
                     </div>
                   </DialogContent>
@@ -630,7 +644,10 @@ export default function Home() {
                   />
                   {/* Before/After button - left corner */}
                   <button
-                    onClick={() => setShowBeforeAfter2(true)}
+                    onClick={() => {
+                      setImageLoading2(true);
+                      setShowBeforeAfter2(true);
+                    }}
                     className="absolute top-4 left-4 bg-black/70 text-white px-3 py-2 rounded-lg flex items-center space-x-2 hover:bg-black/80 transition-colors"
                   >
                     <ImageIcon className="h-4 w-4" />
@@ -640,7 +657,10 @@ export default function Home() {
                   </button>
                   {/* Video button - right corner */}
                   <button
-                    onClick={() => setShowVideo2(true)}
+                    onClick={() => {
+                      setVideoLoading2(true);
+                      setShowVideo2(true);
+                    }}
                     className="absolute top-4 right-4 bg-primary/90 text-primary-foreground px-3 py-3 rounded-lg flex items-center space-x-2 hover:bg-primary transition-colors shadow-lg"
                   >
                     <Play className="h-4 w-4" />
@@ -652,9 +672,12 @@ export default function Home() {
                 <p className="text-muted-foreground text-sm mb-4">
                   {t("courses.advanced.description")}
                 </p>
-                <Button className="w-full bg-primary hover:bg-accent text-primary-foreground mb-2">
+                <LiqPayButton
+                  courseType="advanced"
+                  className="w-full bg-primary hover:bg-accent text-primary-foreground mb-2"
+                >
                   {t("courses.advanced.cta")} за {t("courses.advanced.price")}
-                </Button>
+                </LiqPayButton>
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button variant="outline" className="w-full">
@@ -690,10 +713,13 @@ export default function Home() {
                         </ul>
                       </div>
                       <div className="pt-4">
-                        <Button className="w-full bg-primary hover:bg-accent text-primary-foreground">
+                        <LiqPayButton
+                          courseType="advanced"
+                          className="w-full bg-primary hover:bg-accent text-primary-foreground"
+                        >
                           {t("courses.advanced.cta")} за{" "}
                           {t("courses.advanced.price")}
-                        </Button>
+                        </LiqPayButton>
                       </div>
                     </div>
                   </DialogContent>
@@ -1066,49 +1092,184 @@ export default function Home() {
       </footer>
 
       {/* Before/After Modal 1 */}
-      <Dialog open={showBeforeAfter1} onOpenChange={setShowBeforeAfter1}>
+      <Dialog
+        open={showBeforeAfter1}
+        onOpenChange={(open) => {
+          setShowBeforeAfter1(open);
+          if (!open) setImageLoading1(false);
+        }}
+      >
         <DialogContent className="sm:max-w-[600px] p-0 border-0 ring-0 outline-none focus:outline-none focus:ring-0 bg-transparent shadow-none">
           <DialogTitle className="sr-only">Фото до та після</DialogTitle>
           <div className="relative">
+            {/* Skeleton loader */}
+            {imageLoading1 && (
+              <div className="w-full h-[400px] bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200 animate-pulse rounded-lg flex items-center justify-center relative overflow-hidden">
+                {/* Shimmer effect */}
+                <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                <div className="flex flex-col items-center space-y-4 z-10">
+                  <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                  <div className="text-center space-y-2">
+                    <p className="text-slate-600 font-medium">
+                      {language === "uk"
+                        ? "Завантаження фото..."
+                        : "Loading photo..."}
+                    </p>
+                    <p className="text-slate-400 text-xs">
+                      {language === "uk"
+                        ? "Зачекайте, будь ласка"
+                        : "Please wait"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
             <Image
               src="/images/courses/after1.jpg"
               alt="Before and After"
               width={600}
               height={400}
-              className="w-full h-auto object-cover rounded-lg"
+              className={`w-full h-auto object-cover rounded-lg transition-opacity duration-300 ${
+                imageLoading1 ? "opacity-0 absolute" : "opacity-100"
+              }`}
+              onLoadStart={() => setImageLoading1(true)}
+              onLoad={() => setImageLoading1(false)}
+              onError={() => setImageLoading1(false)}
             />
           </div>
         </DialogContent>
       </Dialog>
 
       {/* Before/After Modal 2 */}
-      <Dialog open={showBeforeAfter2} onOpenChange={setShowBeforeAfter2}>
+      <Dialog
+        open={showBeforeAfter2}
+        onOpenChange={(open) => {
+          setShowBeforeAfter2(open);
+          if (!open) setImageLoading2(false);
+        }}
+      >
         <DialogContent className="sm:max-w-[600px] p-0 border-0 ring-0 outline-none focus:outline-none focus:ring-0 bg-transparent shadow-none">
           <DialogTitle className="sr-only">Фото до та після</DialogTitle>
           <div className="relative">
+            {/* Skeleton loader */}
+            {imageLoading2 && (
+              <div className="w-full h-[400px] bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200 animate-pulse rounded-lg flex items-center justify-center relative overflow-hidden">
+                {/* Shimmer effect */}
+                <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                <div className="flex flex-col items-center space-y-4 z-10">
+                  <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                  <div className="text-center space-y-2">
+                    <p className="text-slate-600 font-medium">
+                      {language === "uk"
+                        ? "Завантаження фото..."
+                        : "Loading photo..."}
+                    </p>
+                    <p className="text-slate-400 text-xs">
+                      {language === "uk"
+                        ? "Зачекайте, будь ласка"
+                        : "Please wait"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
             <Image
               src="/images/courses/after2.jpg"
               alt="Before and After"
               width={600}
               height={400}
-              className="w-full h-auto object-cover rounded-lg"
+              className={`w-full h-auto object-cover rounded-lg transition-opacity duration-300 ${
+                imageLoading2 ? "opacity-0 absolute" : "opacity-100"
+              }`}
+              onLoadStart={() => setImageLoading2(true)}
+              onLoad={() => setImageLoading2(false)}
+              onError={() => setImageLoading2(false)}
             />
           </div>
         </DialogContent>
       </Dialog>
 
       {/* Video Modal 1 */}
-      <Dialog open={showVideo1} onOpenChange={setShowVideo1}>
+      <Dialog
+        open={showVideo1}
+        onOpenChange={(open) => {
+          setShowVideo1(open);
+          if (!open) {
+            setVideoLoading1(false);
+            setVideoProgress1(0);
+          }
+        }}
+      >
         <DialogContent
           style={{ maxWidth: 275 }}
           className="p-0 border-0 bg-transparent shadow-none ring-0 outline-none"
         >
           <DialogTitle className="sr-only">Відео курсу</DialogTitle>
           <div className="relative">
+            {/* Video Skeleton loader */}
+            {videoLoading1 && (
+              <div className="w-full h-[400px] bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200 animate-pulse rounded-lg flex items-center justify-center relative overflow-hidden">
+                {/* Shimmer effect */}
+                <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                <div className="flex flex-col items-center space-y-6 z-10">
+                  <div className="relative">
+                    <div className="w-20 h-20 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                    {/* Play icon in center */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Play className="w-8 h-8 text-primary/60" />
+                    </div>
+                  </div>
+                  <div className="text-center space-y-3">
+                    <p className="text-slate-600 font-medium">
+                      {language === "uk"
+                        ? "Підвантаження відео..."
+                        : "Loading video..."}
+                    </p>
+                    <p className="text-slate-400 text-xs">
+                      {language === "uk"
+                        ? "Готуємо відео у високій якості"
+                        : "Preparing high quality video"}
+                    </p>
+                    {/* Progress bar */}
+                    <div className="w-48 mx-auto">
+                      <div className="w-full bg-slate-300 rounded-full h-2">
+                        <div
+                          className="bg-primary h-2 rounded-full transition-all duration-300 ease-out"
+                          style={{ width: `${videoProgress1}%` }}
+                        ></div>
+                      </div>
+                      <p className="text-slate-400 text-xs mt-1">
+                        {Math.round(videoProgress1)}%
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             <video
               controls
-              className="w-full h-auto rounded-lg max-h-[70vh] object-contain"
-              preload="metadata"
+              preload="auto"
+              className={`w-full h-auto rounded-lg max-h-[70vh] object-contain transition-opacity duration-300 ${
+                videoLoading1 ? "opacity-0 absolute" : "opacity-100"
+              }`}
+              onLoadStart={() => {
+                setVideoLoading1(true);
+                setVideoProgress1(0);
+              }}
+              onProgress={(e) => {
+                const video = e.target as HTMLVideoElement;
+                if (video.buffered.length > 0) {
+                  const progress =
+                    (video.buffered.end(0) / video.duration) * 100;
+                  setVideoProgress1(Math.min(progress, 100));
+                }
+              }}
+              onCanPlay={() => setVideoLoading1(false)}
+              onError={() => setVideoLoading1(false)}
+              onLoadedData={() => {
+                setVideoLoading1(false);
+                setVideoProgress1(100);
+              }}
             >
               <source src="/images/courses/video/cours1.mp4" type="video/mp4" />
               Ваш браузер не підтримує відтворення відео.
@@ -1118,17 +1279,86 @@ export default function Home() {
       </Dialog>
 
       {/* Video Modal 2 */}
-      <Dialog open={showVideo2} onOpenChange={setShowVideo2}>
+      <Dialog
+        open={showVideo2}
+        onOpenChange={(open) => {
+          setShowVideo2(open);
+          if (!open) {
+            setVideoLoading2(false);
+            setVideoProgress2(0);
+          }
+        }}
+      >
         <DialogContent
           style={{ maxWidth: 275 }}
           className="p-0 border-0 bg-transparent shadow-none ring-0 outline-none"
         >
           <DialogTitle className="sr-only">Відео курсу</DialogTitle>
           <div className="relative">
+            {/* Video Skeleton loader */}
+            {videoLoading2 && (
+              <div className="w-full h-[400px] bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200 animate-pulse rounded-lg flex items-center justify-center relative overflow-hidden">
+                {/* Shimmer effect */}
+                <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                <div className="flex flex-col items-center space-y-6 z-10">
+                  <div className="relative">
+                    <div className="w-20 h-20 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                    {/* Play icon in center */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Play className="w-8 h-8 text-primary/60" />
+                    </div>
+                  </div>
+                  <div className="text-center space-y-3">
+                    <p className="text-slate-600 font-medium">
+                      {language === "uk"
+                        ? "Підвантаження відео..."
+                        : "Loading video..."}
+                    </p>
+                    <p className="text-slate-400 text-xs">
+                      {language === "uk"
+                        ? "Готуємо відео у високій якості"
+                        : "Preparing high quality video"}
+                    </p>
+                    {/* Progress bar */}
+                    <div className="w-48 mx-auto">
+                      <div className="w-full bg-slate-300 rounded-full h-2">
+                        <div
+                          className="bg-primary h-2 rounded-full transition-all duration-300 ease-out"
+                          style={{ width: `${videoProgress2}%` }}
+                        ></div>
+                      </div>
+                      <p className="text-slate-400 text-xs mt-1">
+                        {Math.round(videoProgress2)}%
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             <video
               controls
-              className="w-full h-auto rounded-lg max-h-[70vh] object-contain"
-              preload="metadata"
+              preload="auto"
+              className={`w-full h-auto rounded-lg max-h-[70vh] object-contain transition-opacity duration-300 ${
+                videoLoading2 ? "opacity-0 absolute" : "opacity-100"
+              }`}
+              onLoadStart={() => {
+                setVideoLoading2(true);
+                setVideoProgress2(0);
+              }}
+              onProgress={(e) => {
+                const video = e.target as HTMLVideoElement;
+                if (video.buffered.length > 0) {
+                  const progress =
+                    (video.buffered.end(0) / video.duration) * 100;
+                  setVideoProgress2(Math.min(progress, 100));
+                }
+              }}
+              onCanPlay={() => setVideoLoading2(false)}
+              onError={() => setVideoLoading2(false)}
+              onLoadedData={() => {
+                setVideoLoading2(false);
+                setVideoProgress2(100);
+              }}
             >
               <source src="/images/courses/video/cours2.mp4" type="video/mp4" />
               Ваш браузер не підтримує відтворення відео.

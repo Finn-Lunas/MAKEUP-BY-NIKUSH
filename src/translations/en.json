@@ -51,7 +51,9 @@
       ],
       "format": "Format: private Telegram channel",
       "access": "Access to materials – at your convenient time / forever",
-      "pricing_title": "Price:"
+      "pricing_title": "Price:",
+      "basic_pricing": "$23 – basic package (all lessons and materials)",
+      "advanced_pricing": "$30 – advanced package (all lessons + analysis of your cosmetics bag with my personal recommendations)"
     },
     "basic": {
       "title": "Basic Package",
