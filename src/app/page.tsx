@@ -59,6 +59,20 @@ export default function Home() {
     setLanguage(locale);
   };
 
+  // Preload videos on component mount
+  useEffect(() => {
+    const preloadVideo = (src: string) => {
+      const video = document.createElement("video");
+      video.preload = "metadata";
+      video.src = src;
+      // Don't add to DOM, just preload
+    };
+
+    // Preload both videos
+    preloadVideo("/images/courses/video/cours1.mp4");
+    preloadVideo("/images/courses/video/cours2.mp4");
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -1202,25 +1216,25 @@ export default function Home() {
       >
         <DialogContent
           style={{ maxWidth: 275 }}
-          className="p-0 border-0 bg-transparent shadow-none ring-0 outline-none"
+          className="p-0 border-0 bg-transparent shadow-none ring-0 outline-none overflow-hidden"
         >
           <DialogTitle className="sr-only">Відео курсу</DialogTitle>
           <div className="relative">
             {/* Video Skeleton loader */}
             {videoLoading1 && (
-              <div className="w-full h-[400px] bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200 animate-pulse rounded-lg flex items-center justify-center relative overflow-hidden">
+              <div className="w-full aspect-video max-h-[70vh] bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200 animate-pulse rounded-lg flex items-center justify-center relative overflow-hidden">
                 {/* Shimmer effect */}
                 <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-                <div className="flex flex-col items-center space-y-6 z-10">
+                <div className="flex flex-col items-center space-y-4 z-10 p-4">
                   <div className="relative">
-                    <div className="w-20 h-20 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                    <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
                     {/* Play icon in center */}
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <Play className="w-8 h-8 text-primary/60" />
+                      <Play className="w-6 h-6 text-primary/60" />
                     </div>
                   </div>
-                  <div className="text-center space-y-3">
-                    <p className="text-slate-600 font-medium">
+                  <div className="text-center space-y-2">
+                    <p className="text-slate-600 font-medium text-sm">
                       {language === "uk"
                         ? "Підвантаження відео..."
                         : "Loading video..."}
@@ -1231,10 +1245,10 @@ export default function Home() {
                         : "Preparing high quality video"}
                     </p>
                     {/* Progress bar */}
-                    <div className="w-48 mx-auto">
-                      <div className="w-full bg-slate-300 rounded-full h-2">
+                    <div className="w-32 mx-auto">
+                      <div className="w-full bg-slate-300 rounded-full h-1.5">
                         <div
-                          className="bg-primary h-2 rounded-full transition-all duration-300 ease-out"
+                          className="bg-primary h-1.5 rounded-full transition-all duration-300 ease-out"
                           style={{ width: `${videoProgress1}%` }}
                         ></div>
                       </div>
@@ -1248,7 +1262,7 @@ export default function Home() {
             )}
             <video
               controls
-              preload="auto"
+              preload="metadata"
               className={`w-full h-auto rounded-lg max-h-[70vh] object-contain transition-opacity duration-300 ${
                 videoLoading1 ? "opacity-0 absolute" : "opacity-100"
               }`}
@@ -1291,25 +1305,25 @@ export default function Home() {
       >
         <DialogContent
           style={{ maxWidth: 275 }}
-          className="p-0 border-0 bg-transparent shadow-none ring-0 outline-none"
+          className="p-0 border-0 bg-transparent shadow-none ring-0 outline-none overflow-hidden"
         >
           <DialogTitle className="sr-only">Відео курсу</DialogTitle>
           <div className="relative">
             {/* Video Skeleton loader */}
             {videoLoading2 && (
-              <div className="w-full h-[400px] bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200 animate-pulse rounded-lg flex items-center justify-center relative overflow-hidden">
+              <div className="w-full aspect-video max-h-[70vh] bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200 animate-pulse rounded-lg flex items-center justify-center relative overflow-hidden">
                 {/* Shimmer effect */}
                 <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-                <div className="flex flex-col items-center space-y-6 z-10">
+                <div className="flex flex-col items-center space-y-4 z-10 p-4">
                   <div className="relative">
-                    <div className="w-20 h-20 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                    <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
                     {/* Play icon in center */}
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <Play className="w-8 h-8 text-primary/60" />
+                      <Play className="w-6 h-6 text-primary/60" />
                     </div>
                   </div>
-                  <div className="text-center space-y-3">
-                    <p className="text-slate-600 font-medium">
+                  <div className="text-center space-y-2">
+                    <p className="text-slate-600 font-medium text-sm">
                       {language === "uk"
                         ? "Підвантаження відео..."
                         : "Loading video..."}
@@ -1320,10 +1334,10 @@ export default function Home() {
                         : "Preparing high quality video"}
                     </p>
                     {/* Progress bar */}
-                    <div className="w-48 mx-auto">
-                      <div className="w-full bg-slate-300 rounded-full h-2">
+                    <div className="w-32 mx-auto">
+                      <div className="w-full bg-slate-300 rounded-full h-1.5">
                         <div
-                          className="bg-primary h-2 rounded-full transition-all duration-300 ease-out"
+                          className="bg-primary h-1.5 rounded-full transition-all duration-300 ease-out"
                           style={{ width: `${videoProgress2}%` }}
                         ></div>
                       </div>
@@ -1337,7 +1351,7 @@ export default function Home() {
             )}
             <video
               controls
-              preload="auto"
+              preload="metadata"
               className={`w-full h-auto rounded-lg max-h-[70vh] object-contain transition-opacity duration-300 ${
                 videoLoading2 ? "opacity-0 absolute" : "opacity-100"
               }`}
