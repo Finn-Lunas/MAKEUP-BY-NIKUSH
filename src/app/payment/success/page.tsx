@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useLanguage } from "../../../contexts/LanguageContext";
@@ -10,7 +10,7 @@ import { CheckCircle, MessageCircle, Phone, Mail } from "lucide-react";
 // Force dynamic rendering to prevent prerendering errors
 export const dynamic = "force-dynamic";
 
-export default function PaymentSuccessPage() {
+function PaymentSuccessContent() {
   const { t, language } = useLanguage();
   const searchParams = useSearchParams();
   const orderId = searchParams?.get("order_id") || null;
@@ -145,5 +145,27 @@ export default function PaymentSuccessPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function PaymentSuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 flex items-center justify-center p-4">
+          <div className="max-w-2xl w-full bg-white rounded-2xl shadow-2xl p-8 text-center">
+            <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+              <CheckCircle className="w-12 h-12 text-gray-400" />
+            </div>
+            <div className="space-y-4">
+              <div className="h-8 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-6 bg-gray-200 rounded animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+      }
+    >
+      <PaymentSuccessContent />
+    </Suspense>
   );
 }
