@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useLanguage } from "../../../contexts/LanguageContext";
 import { Button } from "../../../components/ui/button";
@@ -128,11 +129,11 @@ export default function PaymentSuccessPage() {
 
         {/* Back to Home */}
         <div className="mt-8">
-          <a href="/">
+          <Link href="/">
             <Button className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white">
               {language === "uk" ? "Повернутися на головну" : "Back to Home"}
             </Button>
-          </a>
+          </Link>
         </div>
       </div>
     </div>
