@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useToast } from "./ui/toast";
 
 interface LiqPayButtonProps {
   courseType: "basic" | "advanced";
@@ -16,6 +17,7 @@ const LiqPayButton: React.FC<LiqPayButtonProps> = ({
   children,
 }) => {
   const { t, language } = useLanguage();
+  const { showToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
   // Prices and course details
@@ -81,12 +83,21 @@ const LiqPayButton: React.FC<LiqPayButtonProps> = ({
       document.body.appendChild(form);
       form.submit();
       document.body.removeChild(form);
+
+      // Show success toast
+      showToast(
+        language === "uk"
+          ? "Перенаправлення на сторінку оплати..."
+          : "Redirecting to payment page...",
+        "success"
+      );
     } catch (error) {
       console.error("Payment error:", error);
-      alert(
+      showToast(
         language === "uk"
           ? "Помилка при переході до оплати. Спробуйте ще раз."
-          : "Payment error. Please try again."
+          : "Payment error. Please try again.",
+        "error"
       );
     } finally {
       setIsLoading(false);
