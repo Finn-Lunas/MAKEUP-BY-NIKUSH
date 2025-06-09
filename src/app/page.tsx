@@ -546,6 +546,14 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Course Section Title */}
+          <div className="text-center mb-12">
+            <h3 className="text-2xl md:text-3xl font-forum text-foreground mb-4">
+              {t("courses.course_section_title")}
+            </h3>
+            <div className="w-16 h-px bg-primary mx-auto" />
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div className="bg-card rounded-lg p-8 border border-border">
               <div className="text-center mb-6">
@@ -762,108 +770,116 @@ export default function Home() {
             </a>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="columns-2 md:columns-4 gap-4 space-y-4">
             <a
-              href="https://www.instagram.com/p/CksKiVjo6Jk/"
+              href="https://www.instagram.com/p/DJ9mgDvo5xM/?igsh=ZTdsN2U0ZDcyY290"
               target="_blank"
               rel="noopener noreferrer"
+              className="block mb-4 break-inside-avoid"
             >
               <Image
-                src="https://ext.same-assets.com/3961209986/1098469580.webp"
+                src="/images/instaram/lady1.jpg"
                 alt="Instagram Post"
                 width={300}
-                height={300}
+                height={400}
                 className="w-full h-auto object-cover rounded-lg hover:opacity-90 transition-opacity"
               />
             </a>
             <a
-              href="https://www.instagram.com/p/Cey1CqxoxQm/"
+              href="https://www.instagram.com/p/DJcejMEoggP/?igsh=MWoybnZzaGUxeWFzbg%3D%3D"
               target="_blank"
               rel="noopener noreferrer"
+              className="block mb-4 break-inside-avoid"
             >
               <Image
-                src="https://ext.same-assets.com/3961209986/463543696.webp"
+                src="/images/instaram/lady2.jpg"
                 alt="Instagram Post"
                 width={300}
-                height={300}
+                height={400}
                 className="w-full h-auto object-cover rounded-lg hover:opacity-90 transition-opacity"
               />
             </a>
             <a
-              href="https://www.instagram.com/p/Cfj_cg8oLLJ/"
+              href="https://www.instagram.com/p/DHbv2acorSk/"
               target="_blank"
               rel="noopener noreferrer"
+              className="block mb-4 break-inside-avoid"
             >
               <Image
-                src="https://ext.same-assets.com/3961209986/195505253.webp"
+                src="/images/instaram/lady3.jpg"
                 alt="Instagram Post"
                 width={300}
-                height={300}
+                height={400}
                 className="w-full h-auto object-cover rounded-lg hover:opacity-90 transition-opacity"
               />
             </a>
             <a
-              href="https://www.instagram.com/p/Cp5ll1vorrP/"
+              href="https://www.instagram.com/p/DHk3guDovWT/?img_index=1"
               target="_blank"
               rel="noopener noreferrer"
+              className="block mb-4 break-inside-avoid"
             >
               <Image
-                src="https://ext.same-assets.com/3961209986/3346430325.webp"
+                src="/images/instaram/lady4.jpg"
                 alt="Instagram Post"
                 width={300}
-                height={300}
+                height={400}
                 className="w-full h-auto object-cover rounded-lg hover:opacity-90 transition-opacity"
               />
             </a>
             <a
-              href="https://www.instagram.com/p/Cpx-gr3I58i/"
+              href="https://www.instagram.com/p/DF2ZewQoWH5/"
               target="_blank"
               rel="noopener noreferrer"
+              className="block mb-4 break-inside-avoid"
             >
               <Image
-                src="https://ext.same-assets.com/3961209986/2393534306.webp"
+                src="/images/instaram/lady5.jpg"
                 alt="Instagram Post"
                 width={300}
-                height={300}
+                height={400}
                 className="w-full h-auto object-cover rounded-lg hover:opacity-90 transition-opacity"
               />
             </a>
             <a
-              href="https://www.instagram.com/p/CpVu3seIFrZ/"
+              href="https://www.instagram.com/p/DC4sDu8INKL/"
               target="_blank"
               rel="noopener noreferrer"
+              className="block mb-4 break-inside-avoid"
             >
               <Image
-                src="https://ext.same-assets.com/3961209986/3737901961.webp"
+                src="/images/instaram/lady6.jpg"
                 alt="Instagram Post"
                 width={300}
-                height={300}
+                height={400}
                 className="w-full h-auto object-cover rounded-lg hover:opacity-90 transition-opacity"
               />
             </a>
             <a
-              href="https://www.instagram.com/p/CpLIh1nof8M/"
+              href="https://www.instagram.com/p/DCCUD0KIQ1O/"
               target="_blank"
               rel="noopener noreferrer"
+              className="block mb-4 break-inside-avoid"
             >
               <Image
-                src="https://ext.same-assets.com/3961209986/3100238781.webp"
+                src="/images/instaram/lady7.jpg"
                 alt="Instagram Post"
                 width={300}
-                height={300}
+                height={400}
                 className="w-full h-auto object-cover rounded-lg hover:opacity-90 transition-opacity"
               />
             </a>
             <a
-              href="https://www.instagram.com/p/CneK2JNooBf/"
+              href="https://www.instagram.com/p/DBbIIoUIV5A/"
               target="_blank"
               rel="noopener noreferrer"
+              className="block mb-4 break-inside-avoid"
             >
               <Image
-                src="https://ext.same-assets.com/3961209986/2255669655.webp"
+                src="/images/instaram/lady8.jpg"
                 alt="Instagram Post"
                 width={300}
-                height={300}
+                height={400}
                 className="w-full h-auto object-cover rounded-lg hover:opacity-90 transition-opacity"
               />
             </a>
