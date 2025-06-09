@@ -47,12 +47,12 @@ export const Toast: React.FC<ToastProps> = ({
 
   return (
     <div
-      className={`fixed top-4 right-4 z-50 transform transition-all duration-300 ${
+      className={`fixed top-4 left-1/2 transform -translate-x-1/2 md:left-auto md:right-4 md:translate-x-0 z-50 transition-all duration-300 ${
         isVisible ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
       }`}
     >
       <div
-        className={`${getTypeStyles()} text-white px-6 py-4 rounded-lg shadow-lg border-l-4 max-w-md`}
+        className={`${getTypeStyles()} text-white px-6 py-4 rounded-lg shadow-lg border-l-4 max-w-md w-full md:w-auto mx-4 md:mx-0`}
       >
         <div className="flex items-start space-x-3">
           <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
