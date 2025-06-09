@@ -47,17 +47,19 @@ export const Toast: React.FC<ToastProps> = ({
 
   return (
     <div
-      className={`fixed top-4 left-1/2 transform -translate-x-1/2 md:left-auto md:right-4 md:translate-x-0 z-50 transition-all duration-300 ${
+      className={`fixed top-4 left-4 right-4 md:left-auto md:right-4 z-50 flex justify-center md:justify-end transition-all duration-300 ${
         isVisible ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
       }`}
     >
       <div
-        className={`${getTypeStyles()} text-white px-6 py-4 rounded-lg shadow-lg border-l-4 max-w-md w-full md:w-auto mx-4 md:mx-0`}
+        className={`${getTypeStyles()} text-white px-6 py-4 rounded-lg shadow-lg border-l-4 min-w-[280px] max-w-[calc(100vw-2rem)] md:max-w-md`}
       >
         <div className="flex items-start space-x-3">
           <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
           <div className="flex-1">
-            <p className="text-sm font-medium">{message}</p>
+            <p className="text-sm font-medium whitespace-nowrap sm:whitespace-normal">
+              {message}
+            </p>
           </div>
           <button
             onClick={handleClose}
