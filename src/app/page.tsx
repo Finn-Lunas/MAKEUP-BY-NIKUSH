@@ -492,15 +492,15 @@ export default function Home() {
             <div className="bg-card rounded-lg p-8 border border-border">
               <div className="space-y-6">
                 <div className="text-left">
+                  <h4 className="text-xl font-medium text-foreground mb-4">
+                    {t("courses.general.what_awaits")}
+                  </h4>
                   <p className="text-foreground text-lg leading-relaxed whitespace-pre-line">
                     {t("courses.general.makeup_types")}
                   </p>
                 </div>
 
                 <div>
-                  <h4 className="text-xl font-medium text-foreground mb-4">
-                    {t("courses.general.what_awaits")}
-                  </h4>
                   <ul className="space-y-2">
                     {translations.courses.general.features.map(
                       (feature, index) => (
