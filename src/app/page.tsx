@@ -1279,6 +1279,7 @@ export default function Home() {
             <video
               controls
               preload="metadata"
+              muted
               className={`w-full h-auto rounded-lg max-h-[70vh] object-contain transition-opacity duration-300 ${
                 videoLoading1 ? "opacity-0 absolute" : "opacity-100"
               }`}
@@ -1368,6 +1369,7 @@ export default function Home() {
             <video
               controls
               preload="metadata"
+              muted
               className={`w-full h-auto rounded-lg max-h-[70vh] object-contain transition-opacity duration-300 ${
                 videoLoading2 ? "opacity-0 absolute" : "opacity-100"
               }`}
