@@ -532,11 +532,11 @@ export default function Home() {
                     {t("courses.general.pricing_title")}
                   </h4>
                   <div className="space-y-2 text-muted-foreground">
-                    <p className="flex items-center space-x-2">
+                    <p className="flex items-start space-x-2">
                       <span className="text-primary">💄</span>
                       <span>{t("courses.general.basic_pricing")}</span>
                     </p>
-                    <p className="flex items-center space-x-2">
+                    <p className="flex items-start space-x-2">
                       <span className="text-primary">💄</span>
                       <span>{t("courses.general.advanced_pricing")}</span>
                     </p>
