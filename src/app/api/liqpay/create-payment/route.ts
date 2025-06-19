@@ -4,11 +4,33 @@ import crypto from "crypto";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { courseType, language, price, description } = body;
+    const {
+      courseType,
+      language,
+      price,
+      description,
+      customerEmail,
+      customerPhone,
+    } = body;
 
-    if (!courseType || !price || !description) {
+    if (
+      !courseType ||
+      !price ||
+      !description ||
+      !customerEmail ||
+      !customerPhone
+    ) {
       return NextResponse.json(
         { error: "Missing required parameters" },
+        { status: 400 }
+      );
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(customerEmail)) {
+      return NextResponse.json(
+        { error: "Invalid email format" },
         { status: 400 }
       );
     }
@@ -32,7 +54,7 @@ export async function POST(request: NextRequest) {
       action: "pay",
       amount: price,
       currency: "UAH",
-      description: description,
+      description: `${description} | ${customerEmail}`,
       order_id: orderId,
       language: language === "uk" ? "uk" : "en",
       server_url: `${
@@ -41,9 +63,11 @@ export async function POST(request: NextRequest) {
       result_url: `${
         process.env.NEXT_PUBLIC_BASE_URL || request.nextUrl.origin
       }/payment/success?order_id=${orderId}`,
-      // Optional: Add customer info if needed
-      // sender_phone: "",
-      // sender_email: "",
+      // Add customer info
+      sender_email: customerEmail,
+      sender_phone: customerPhone,
+      // Additional info that should be visible in payment details
+      info: `Email: ${customerEmail} | Tel: ${customerPhone}`,
     };
 
     // Encode data to base64
@@ -55,13 +79,6 @@ export async function POST(request: NextRequest) {
       .createHash("sha1")
       .update(signString)
       .digest("base64");
-
-    console.log("Payment created:", {
-      orderId,
-      courseType,
-      amount: price,
-      currency: "UAH",
-    });
 
     return NextResponse.json({
       data,

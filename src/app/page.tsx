@@ -557,13 +557,13 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div className="bg-card rounded-lg p-8 border border-border">
               <div className="text-center mb-6">
-                <div className="relative">
+                <div className="relative h-96 mb-4 overflow-hidden rounded-lg">
                   <Image
                     src="/images/courses/cours1.jpg"
                     alt="Course Preview"
                     width={370}
                     height={460}
-                    className="w-[370px] h-[460px] object-cover rounded-lg mb-4 mx-auto"
+                    className="w-full h-full object-cover"
                   />
                   {/* Before/After button - left corner */}
                   <button
@@ -656,13 +656,13 @@ export default function Home() {
 
             <div className="bg-card rounded-lg p-8 border border-border">
               <div className="text-center mb-6">
-                <div className="relative">
+                <div className="relative h-96 mb-4 overflow-hidden rounded-lg">
                   <Image
                     src="/images/courses/cours2.jpg"
                     alt="Course Preview"
                     width={370}
                     height={460}
-                    className="w-[370px] h-[460px] object-cover rounded-lg mb-4 mx-auto"
+                    className="w-full h-full object-cover"
                   />
                   {/* Before/After button - left corner */}
                   <button

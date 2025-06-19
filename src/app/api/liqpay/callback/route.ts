@@ -40,26 +40,79 @@ export async function POST(request: NextRequest) {
       const orderId = paymentData.order_id;
       const courseType = orderId.split("_")[1]; // Extract course type from order_id
 
-      // Here you would typically:
-      // 1. Save payment info to database
-      // 2. Grant access to the course
-      // 3. Send confirmation email
-      // 4. Add user to Telegram channel
-
       console.log(`Successful payment for ${courseType} course:`, {
         orderId: paymentData.order_id,
         amount: paymentData.amount,
         currency: paymentData.currency,
         status: paymentData.status,
         paymentId: paymentData.payment_id,
+        customerEmail: paymentData.sender_email,
+        customerPhone: paymentData.sender_phone,
       });
 
-      // TODO: Implement your business logic here
-      // Examples:
-      // - await savePaymentToDatabase(paymentData);
-      // - await grantCourseAccess(paymentData.sender_phone, courseType);
-      // - await sendConfirmationEmail(paymentData);
-      // - await addToTelegramChannel(paymentData.sender_phone);
+      // Send course access email
+      try {
+        console.log("🔄 Attempting to send email via callback...");
+        console.log("📧 Email data:", {
+          customerEmail: paymentData.sender_email,
+          customerPhone: paymentData.sender_phone,
+          courseType,
+          orderId: paymentData.order_id,
+          language: paymentData.language || "uk",
+        });
+
+        const emailResponse = await fetch(
+          `${
+            process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+          }/api/send-course-email`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              customerEmail: paymentData.sender_email,
+              customerPhone: paymentData.sender_phone,
+              courseType,
+              orderId: paymentData.order_id,
+              language: paymentData.language || "uk",
+            }),
+          }
+        );
+
+        console.log("📬 Email API response status:", emailResponse.status);
+        const emailResult = await emailResponse.json();
+        console.log("📬 Email API response body:", emailResult);
+
+        if (emailResponse.ok) {
+          console.log("✅ Course access email sent successfully");
+        } else {
+          console.error("❌ Failed to send course access email");
+        }
+      } catch (emailError) {
+        console.error("💥 Error sending course access email:", emailError);
+      }
+
+      // Here you could also:
+      // 1. Save payment info to database
+      // 2. Add user to Telegram channel automatically (if you have Telegram Bot API)
+      // 3. Update user permissions/access rights
+      // 4. Send notification to admin
+
+      // Example of saving to database (if you had one):
+      /*
+      await savePaymentToDatabase({
+        orderId: paymentData.order_id,
+        courseType,
+        customerEmail: paymentData.sender_email,
+        customerPhone: paymentData.sender_phone,
+        amount: paymentData.amount,
+        currency: paymentData.currency,
+        status: paymentData.status,
+        paymentId: paymentData.payment_id,
+        paidAt: new Date(),
+      });
+      */
 
       return NextResponse.json({ status: "OK" });
     } else {
