@@ -193,36 +193,9 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
   const handlePaymentSuccess = () => {
     setStep("success");
 
-    // For development: LiqPay callback won't work with localhost
-    // So we need a fallback to send email directly from frontend
-    // On production, this fallback is not needed as callback will work
-
-    console.log("Payment successful, sending email via frontend fallback");
-    setTimeout(async () => {
-      try {
-        const emailResponse = await fetch("/api/send-course-email", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            customerEmail: formData.email,
-            customerPhone: formData.phone,
-            courseType,
-            orderId,
-            language,
-          }),
-        });
-
-        if (emailResponse.ok) {
-          console.log("Course email sent successfully via frontend fallback");
-        } else {
-          console.error("Failed to send email via fallback");
-        }
-      } catch (emailError) {
-        console.error("Error sending email via fallback:", emailError);
-      }
-    }, 1000); // 1 second delay
+    // Email will be sent via LiqPay callback when payment is confirmed
+    // This ensures we only send emails for actually successful payments
+    console.log("Payment successful - email will be sent via callback");
   };
 
   const handleClose = () => {
@@ -490,8 +463,8 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         </h3>
         <p className="text-muted-foreground mb-4">
           {language === "uk"
-            ? "Дякуємо за покупку! Посилання на курс відправлено на вашу пошту."
-            : "Thank you for your purchase! Course link has been sent to your email."}
+            ? "Дякуємо за покупку! Посилання на курс буде відправлено на вашу пошту протягом кількох хвилин."
+            : "Thank you for your purchase! Course link will be sent to your email within a few minutes."}
         </p>
         {orderId && (
           <div className="bg-muted/50 p-3 rounded-lg">

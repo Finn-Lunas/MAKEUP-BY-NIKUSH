@@ -15,10 +15,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify signature
-    const privateKey =
-      process.env.LIQPAY_PRIVATE_KEY ||
-      "sandbox_dHdSc98t7X6sBFALLaAbEYLRxpQCVl8QMRHuPWh7";
+    // Verify signature using environment variable
+    const privateKey = process.env.LIQPAY_PRIVATE_KEY;
+
+    if (!privateKey) {
+      console.error("LiqPay private key not configured");
+      return NextResponse.json(
+        { error: "Payment service not configured" },
+        { status: 500 }
+      );
+    }
+
     const expectedSignature = crypto
       .createHash("sha1")
       .update(privateKey + data + privateKey)
@@ -62,9 +69,7 @@ export async function POST(request: NextRequest) {
         });
 
         const emailResponse = await fetch(
-          `${
-            process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
-          }/api/send-course-email`,
+          `${process.env.NEXT_PUBLIC_BASE_URL}api/send-course-email`,
           {
             method: "POST",
             headers: {
@@ -98,21 +103,6 @@ export async function POST(request: NextRequest) {
       // 2. Add user to Telegram channel automatically (if you have Telegram Bot API)
       // 3. Update user permissions/access rights
       // 4. Send notification to admin
-
-      // Example of saving to database (if you had one):
-      /*
-      await savePaymentToDatabase({
-        orderId: paymentData.order_id,
-        courseType,
-        customerEmail: paymentData.sender_email,
-        customerPhone: paymentData.sender_phone,
-        amount: paymentData.amount,
-        currency: paymentData.currency,
-        status: paymentData.status,
-        paymentId: paymentData.payment_id,
-        paidAt: new Date(),
-      });
-      */
 
       return NextResponse.json({ status: "OK" });
     } else {
