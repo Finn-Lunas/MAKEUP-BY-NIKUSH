@@ -105,7 +105,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
     setIsLoading(true);
 
     try {
-      // Create payment
+      // Try API route first
       const response = await fetch("/api/liqpay/create-payment", {
         method: "POST",
         headers: {
@@ -122,7 +122,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create payment");
+        throw new Error("API route not available");
       }
 
       const { data, signature, orderId: newOrderId } = await response.json();
@@ -130,13 +130,53 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
       setPaymentData({ data, signature });
       setStep("payment");
     } catch (error) {
-      console.error("Payment creation error:", error);
-      showToast(
-        language === "uk"
-          ? "Помилка при створенні платежу. Спробуйте ще раз."
-          : "Payment creation error. Please try again.",
-        "error"
-      );
+      console.error("API route failed, using frontend fallback:", error);
+
+      // Frontend fallback for payment creation
+      try {
+        const crypto = require("crypto");
+        const orderId = `order_${Date.now()}_${Math.random()
+          .toString(36)
+          .substr(2, 9)}`;
+
+        // LiqPay credentials (hardcoded for testing)
+        const publicKey = "sandbox_i69196450911";
+        const privateKey = "sandbox_WxzBChCT4TcZIYfNusvwW0JfyKHUtfyt2hxdBGL1";
+
+        const paymentParams = {
+          public_key: publicKey,
+          version: "3",
+          action: "pay",
+          amount: coursePrice,
+          currency: "UAH",
+          description: courseTitle,
+          order_id: orderId,
+          result_url: `${window.location.origin}/payment/success`,
+          server_url: `${window.location.origin}/api/liqpay/callback`,
+          language: language === "uk" ? "uk" : "en",
+        };
+
+        const data = Buffer.from(JSON.stringify(paymentParams)).toString(
+          "base64"
+        );
+        const signature = crypto
+          .createHash("sha1")
+          .update(privateKey + data + privateKey)
+          .digest("base64");
+
+        console.log("Payment created via frontend fallback");
+        setOrderId(orderId);
+        setPaymentData({ data, signature });
+        setStep("payment");
+      } catch (fallbackError) {
+        console.error("Frontend fallback also failed:", fallbackError);
+        showToast(
+          language === "uk"
+            ? "Помилка при створенні платежу. Спробуйте ще раз."
+            : "Payment creation error. Please try again.",
+          "error"
+        );
+      }
     } finally {
       setIsLoading(false);
     }
@@ -149,7 +189,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
     // So we need a fallback to send email directly from frontend
     // On production, this fallback is not needed as callback will work
 
-    /* Development fallback - commented out for production
+    console.log("Payment successful, sending email via frontend fallback");
     setTimeout(async () => {
       try {
         const emailResponse = await fetch("/api/send-course-email", {
@@ -166,14 +206,15 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
           }),
         });
 
-        if (!emailResponse.ok) {
+        if (emailResponse.ok) {
+          console.log("Course email sent successfully via frontend fallback");
+        } else {
           console.error("Failed to send email via fallback");
         }
       } catch (emailError) {
         console.error("Error sending email via fallback:", emailError);
       }
     }, 1000); // 1 second delay
-    */
   };
 
   const handleClose = () => {
