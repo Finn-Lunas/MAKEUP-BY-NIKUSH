@@ -313,7 +313,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
           {language === "uk" ? "Оформлення замовлення" : "Order Details"}
         </h3>
         <p className="text-muted-foreground">
-          {courseTitle} - {coursePrice} грн
+          {courseTitle} - {coursePrice} {language === "uk" ? "грн" : "UAH"}
         </p>
       </div>
 
@@ -390,7 +390,9 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
           {language === "uk" ? "Деталі замовлення:" : "Order details:"}
         </p>
         <p className="font-semibold">{courseTitle}</p>
-        <p className="text-lg font-bold text-primary">{coursePrice} грн</p>
+        <p className="text-lg font-bold text-primary">
+          {coursePrice} {language === "uk" ? "грн" : "UAH"}
+        </p>
       </div>
 
       {/* LiqPay Widget Container */}

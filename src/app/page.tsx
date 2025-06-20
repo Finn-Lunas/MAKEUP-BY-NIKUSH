@@ -599,7 +599,7 @@ export default function Home() {
                   courseType="basic"
                   className="w-full bg-primary hover:bg-accent text-primary-foreground mb-2"
                 >
-                  {t("courses.basic.cta")} за {t("courses.basic.price")}
+                  {t("courses.basic.cta")}
                 </LiqPayButton>
                 <Dialog>
                   <DialogTrigger asChild>
@@ -645,7 +645,7 @@ export default function Home() {
                           courseType="basic"
                           className="w-full bg-primary hover:bg-accent text-primary-foreground"
                         >
-                          {t("courses.basic.cta")} за {t("courses.basic.price")}
+                          {t("courses.basic.cta")}
                         </LiqPayButton>
                       </div>
                     </div>
@@ -698,7 +698,7 @@ export default function Home() {
                   courseType="advanced"
                   className="w-full bg-primary hover:bg-accent text-primary-foreground mb-2"
                 >
-                  {t("courses.advanced.cta")} за {t("courses.advanced.price")}
+                  {t("courses.advanced.cta")}
                 </LiqPayButton>
                 <Dialog>
                   <DialogTrigger asChild>
@@ -739,8 +739,7 @@ export default function Home() {
                           courseType="advanced"
                           className="w-full bg-primary hover:bg-accent text-primary-foreground"
                         >
-                          {t("courses.advanced.cta")} за{" "}
-                          {t("courses.advanced.price")}
+                          {t("courses.advanced.cta")}
                         </LiqPayButton>
                       </div>
                     </div>

@@ -57,8 +57,8 @@
       "advanced_pricing": "$30 – advanced package (all lessons + analysis of your cosmetics bag with my personal recommendations)"
     },
     "basic": {
-      "title": "Basic Package",
-      "price": "$23",
+      "title": "Basic package",
+      "price": "900 UAH",
       "duration": "18+ hours",
       "description": "Perfect for those who want to learn makeup from scratch or refresh their knowledge.",
       "beforeAfter": "Before & After",
@@ -67,21 +67,21 @@
         "basics": "Makeup basics",
         "tools": "Tools and cosmetics",
         "techniques": "Basic techniques",
-        "videos": "Over 100 video lessons",
-        "hours": "More than 18 hours of educational content",
-        "support": "Support from the course author"
+        "videos": "100+ video tutorials",
+        "hours": "18+ hours of educational content",
+        "support": "Support from course author"
       },
-      "cta": "Buy",
+      "cta": "Buy for 900 UAH",
       "details": "Details",
       "popup": {
-        "title": "\"Basic\" Package — $23",
+        "title": "\"Basic\" Package — 900 UAH",
         "description": "Perfect for those who want to learn makeup from scratch or refresh their knowledge.",
         "whatYouGet": "What's included:",
         "features": [
-          "2 complete video tutorials: every day makeup and evening makeup",
+          "2 complete video tutorials: day and evening makeup",
           "Step-by-step explanation of all stages",
           "Skin preparation presentation",
-          "Basic cosmetics bag recommendations",
+          "Basic makeup kit recommendations",
           "Access to private Telegram channel with course materials"
         ],
         "bonus": "❤️‍🔥 + bonus for everyone: my personal recommendations and mini video tutorial on how to style trendy curtain bangs"
@@ -89,10 +89,10 @@
     },
     "advanced": {
       "title": "Premium Package",
-      "price": "$30",
+      "price": "1200 UAH",
       "duration": "Additional content",
       "popular": "Popular",
-      "description": "For those who want maximum benefit and personalized approach.",
+      "description": "For those who want maximum benefit and personal approach.",
       "beforeAfter": "Before & After",
       "watchVideo": "Watch Video",
       "features": {
@@ -103,11 +103,11 @@
         "skinTypes": "Working with different skin types",
         "ageGroups": "Features of working with different age groups"
       },
-      "cta": "Buy",
+      "cta": "Buy for 1200 UAH",
       "details": "Details",
       "popup": {
-        "title": "💎 \"Premium\" Package — $30",
-        "description": "For those who want maximum benefit and personalized approach.",
+        "title": "💎 \"Premium\" Package — 1200 UAH",
+        "description": "For those who want maximum benefit and personal approach.",
         "whatYouGet": "Everything from the basic package, plus:",
         "features": [
           "Analysis of your cosmetics — what to keep and what to replace",
