@@ -59,6 +59,10 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
   const [paymentError, setPaymentError] = useState<boolean>(false);
   const [widgetLoading, setWidgetLoading] = useState<boolean>(false);
 
+  // Generate unique IDs for form fields
+  const emailId = `payment-email-${courseType}`;
+  const phoneId = `payment-phone-${courseType}`;
+
   const handleInputChange = (field: keyof PaymentFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -192,9 +196,6 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
 
   const handlePaymentSuccess = () => {
     setStep("success");
-
-    // Email will be sent via LiqPay callback when payment is confirmed
-    // This ensures we only send emails for actually successful payments
     console.log("Payment successful - email will be sent via callback");
   };
 
@@ -318,12 +319,12 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
 
       <div className="space-y-4">
         <div>
-          <Label htmlFor="email" className="flex items-center space-x-2">
+          <Label htmlFor={emailId} className="flex items-center space-x-2">
             <Mail className="w-4 h-4" />
             <span>{language === "uk" ? "Email адреса" : "Email Address"}</span>
           </Label>
           <Input
-            id="email"
+            id={emailId}
             type="email"
             placeholder={
               language === "uk" ? "your@email.com" : "your@email.com"
@@ -335,12 +336,12 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         </div>
 
         <div>
-          <Label htmlFor="phone" className="flex items-center space-x-2">
+          <Label htmlFor={phoneId} className="flex items-center space-x-2">
             <Phone className="w-4 h-4" />
             <span>{language === "uk" ? "Номер телефону" : "Phone Number"}</span>
           </Label>
           <Input
-            id="phone"
+            id={phoneId}
             type="tel"
             placeholder={language === "uk" ? "+380..." : "+380..."}
             value={formData.phone}

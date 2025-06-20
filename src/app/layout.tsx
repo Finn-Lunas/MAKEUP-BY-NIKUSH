@@ -19,9 +19,27 @@ export const metadata: Metadata = {
   title: "Makeup by Nikush",
   description: "Professional makeup courses and services",
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
-    apple: "/favicon.svg",
+    icon: [
+      {
+        url: "/favicon.svg",
+        sizes: "any",
+        type: "image/svg+xml",
+      },
+    ],
+    shortcut: [
+      {
+        url: "/favicon.svg",
+        sizes: "any",
+        type: "image/svg+xml",
+      },
+    ],
+    apple: [
+      {
+        url: "/favicon.svg",
+        sizes: "any",
+        type: "image/svg+xml",
+      },
+    ],
   },
 };
 
