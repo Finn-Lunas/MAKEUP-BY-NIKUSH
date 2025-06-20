@@ -35,12 +35,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // LiqPay keys - in production, these should be in environment variables
-    const publicKey =
-      process.env.NEXT_PUBLIC_LIQPAY_PUBLIC_KEY || "sandbox_i12840188914";
-    const privateKey =
-      process.env.LIQPAY_PRIVATE_KEY ||
-      "sandbox_dHdSc98t7X6sBFALLaAbEYLRxpQCVl8QMRHuPWh7";
+    // LiqPay keys from environment variables
+    const publicKey = process.env.NEXT_PUBLIC_LIQPAY_PUBLIC_KEY;
+    const privateKey = process.env.LIQPAY_PRIVATE_KEY;
+
+    if (!publicKey || !privateKey) {
+      console.error("LiqPay credentials not configured");
+      return NextResponse.json(
+        { error: "Payment service not configured" },
+        { status: 500 }
+      );
+    }
 
     // Generate unique order ID
     const orderId = `course_${courseType}_${Date.now()}_${Math.random()
@@ -59,10 +64,10 @@ export async function POST(request: NextRequest) {
       language: language === "uk" ? "uk" : "en",
       server_url: `${
         process.env.NEXT_PUBLIC_BASE_URL || request.nextUrl.origin
-      }/api/liqpay/callback`,
+      }api/liqpay/callback`,
       result_url: `${
         process.env.NEXT_PUBLIC_BASE_URL || request.nextUrl.origin
-      }/payment/success?order_id=${orderId}`,
+      }payment/success?order_id=${orderId}`,
       // Add customer info
       sender_email: customerEmail,
       sender_phone: customerPhone,

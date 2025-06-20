@@ -139,9 +139,13 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
           .toString(36)
           .substr(2, 9)}`;
 
-        // LiqPay credentials (hardcoded for testing)
-        const publicKey = "sandbox_i69196450911";
-        const privateKey = "sandbox_WxzBChCT4TcZIYfNusvwW0JfyKHUtfyt2hxdBGL1";
+        // LiqPay credentials from environment variables
+        const publicKey = process.env.NEXT_PUBLIC_LIQPAY_PUBLIC_KEY;
+        const privateKey = process.env.LIQPAY_PRIVATE_KEY;
+
+        if (!publicKey || !privateKey) {
+          throw new Error("LiqPay credentials not configured");
+        }
 
         const paymentParams = {
           public_key: publicKey,
@@ -151,8 +155,12 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
           currency: "UAH",
           description: courseTitle,
           order_id: orderId,
-          result_url: `${window.location.origin}/payment/success`,
-          server_url: `${window.location.origin}/api/liqpay/callback`,
+          result_url: `${
+            process.env.NEXT_PUBLIC_BASE_URL || window.location.origin
+          }payment/success`,
+          server_url: `${
+            process.env.NEXT_PUBLIC_BASE_URL || window.location.origin
+          }api/liqpay/callback`,
           language: language === "uk" ? "uk" : "en",
         };
 
