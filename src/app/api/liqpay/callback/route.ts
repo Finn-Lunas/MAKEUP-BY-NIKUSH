@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
         console.log("📬 Email API response body:", emailResult);
 
         if (emailResponse.ok) {
-          console.log("✅ Course access email sent successfully");
+          console.log("✅ Course access email sent successfully ");
         } else {
           console.error("❌ Failed to send course access email");
         }
