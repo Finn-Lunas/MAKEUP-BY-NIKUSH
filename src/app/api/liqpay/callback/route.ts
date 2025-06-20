@@ -118,12 +118,6 @@ export async function POST(request: NextRequest) {
         console.error("💥 Error sending course access email:", emailError);
       }
 
-      // Here you could also:
-      // 1. Save payment info to database
-      // 2. Add user to Telegram channel automatically (if you have Telegram Bot API)
-      // 3. Update user permissions/access rights
-      // 4. Send notification to admin
-
       return NextResponse.json({ status: "OK" });
     } else {
       console.log("Payment not successful:", paymentData.status);
