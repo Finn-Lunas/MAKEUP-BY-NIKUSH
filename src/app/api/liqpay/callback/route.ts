@@ -47,21 +47,41 @@ export async function POST(request: NextRequest) {
       const orderId = paymentData.order_id;
       const courseType = orderId.split("_")[1]; // Extract course type from order_id
 
+      // Extract email from description or info field since sender_email is not provided
+      let customerEmail = paymentData.sender_email;
+      if (!customerEmail && paymentData.description) {
+        const emailMatch = paymentData.description.match(
+          /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/
+        );
+        customerEmail = emailMatch ? emailMatch[1] : null;
+      }
+      if (!customerEmail && paymentData.info) {
+        const emailMatch = paymentData.info.match(
+          /Email:\s*([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/
+        );
+        customerEmail = emailMatch ? emailMatch[1] : null;
+      }
+
       console.log(`Successful payment for ${courseType} course:`, {
         orderId: paymentData.order_id,
         amount: paymentData.amount,
         currency: paymentData.currency,
         status: paymentData.status,
         paymentId: paymentData.payment_id,
-        customerEmail: paymentData.sender_email,
+        customerEmail: customerEmail,
         customerPhone: paymentData.sender_phone,
       });
+
+      if (!customerEmail) {
+        console.error("❌ Customer email not found in payment data");
+        return NextResponse.json({ status: "Email not found" });
+      }
 
       // Send course access email
       try {
         console.log("🔄 Attempting to send email via callback...");
         console.log("📧 Email data:", {
-          customerEmail: paymentData.sender_email,
+          customerEmail: customerEmail,
           customerPhone: paymentData.sender_phone,
           courseType,
           orderId: paymentData.order_id,
@@ -76,7 +96,7 @@ export async function POST(request: NextRequest) {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              customerEmail: paymentData.sender_email,
+              customerEmail: customerEmail,
               customerPhone: paymentData.sender_phone,
               courseType,
               orderId: paymentData.order_id,
