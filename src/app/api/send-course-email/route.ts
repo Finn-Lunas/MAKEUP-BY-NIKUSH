@@ -3,6 +3,7 @@ import nodemailer from "nodemailer";
 
 // Type declaration for global cache
 declare global {
+  // eslint-disable-next-line no-var
   var recentlyProcessedEmails: { [key: string]: number } | undefined;
 }
 
