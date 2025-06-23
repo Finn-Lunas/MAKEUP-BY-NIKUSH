@@ -58,6 +58,9 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
   } | null>(null);
   const [paymentError, setPaymentError] = useState<boolean>(false);
   const [widgetLoading, setWidgetLoading] = useState<boolean>(false);
+  const [redirectCountdown, setRedirectCountdown] = useState<number>(3);
+  const [telegramUrl, setTelegramUrl] = useState<string>("");
+  const [isLoadingTelegram, setIsLoadingTelegram] = useState<boolean>(false);
 
   // Generate unique IDs for form fields
   const emailId = `payment-email-${courseType}`;
@@ -194,10 +197,70 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
     }
   };
 
-  const handlePaymentSuccess = () => {
+  const handlePaymentSuccess = async () => {
     setStep("success");
-    console.log("Payment successful - email will be sent via callback");
+    setRedirectCountdown(3); // Reset countdown
+    setIsLoadingTelegram(true);
+
+    console.log("Payment successful - getting telegram link");
+
+    try {
+      // Отримуємо посилання на Telegram з API
+      const response = await fetch("/api/get-telegram-link", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ orderId }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setTelegramUrl(data.telegramUrl);
+      } else {
+        console.error("Failed to get telegram link");
+        showToast(
+          language === "uk"
+            ? "Помилка отримання посилання. Посилання буде відправлено на email."
+            : "Error getting link. Link will be sent to email.",
+          "error"
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching telegram link:", error);
+    } finally {
+      setIsLoadingTelegram(false);
+    }
   };
+
+  // Auto-redirect to Telegram after successful payment
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    if (
+      step === "success" &&
+      redirectCountdown > 0 &&
+      telegramUrl &&
+      !isLoadingTelegram
+    ) {
+      interval = setInterval(() => {
+        setRedirectCountdown((prev) => {
+          if (prev <= 1) {
+            // Redirect to Telegram
+            window.open(telegramUrl, "_blank");
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [step, redirectCountdown, telegramUrl, isLoadingTelegram]);
 
   const handleClose = () => {
     // Clear LiqPay widget
@@ -212,6 +275,9 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
     setPaymentData(null);
     setPaymentError(false);
     setWidgetLoading(false);
+    setRedirectCountdown(3); // Reset countdown
+    setTelegramUrl("");
+    setIsLoadingTelegram(false);
     onClose();
   };
 
@@ -398,47 +464,51 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
       {/* LiqPay Widget Container */}
       <div
         id="liqpay_checkout"
-        className="min-h-[400px] border rounded-lg flex items-center justify-center"
+        className="min-h-[400px] border rounded-lg relative"
       >
         {paymentError ? (
-          <div className="text-center">
-            <div className="text-red-500 mb-4">
-              <svg
-                className="w-16 h-16 mx-auto mb-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
-                />
-              </svg>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center">
+              <div className="text-red-500 mb-4">
+                <svg
+                  className="w-16 h-16 mx-auto mb-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold mb-2">
+                {language === "uk"
+                  ? "Сервіс тимчасово недоступний"
+                  : "Service Temporarily Unavailable"}
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                {language === "uk"
+                  ? "Сервіс оплати LiqPay тимчасово недоступний. Спробуйте ще раз через кілька хвилин."
+                  : "LiqPay payment service is temporarily unavailable. Please try again in a few minutes."}
+              </p>
+              <Button onClick={retryPayment} className="mb-2">
+                {language === "uk" ? "Спробувати ще раз" : "Try Again"}
+              </Button>
             </div>
-            <h3 className="text-lg font-semibold mb-2">
-              {language === "uk"
-                ? "Сервіс тимчасово недоступний"
-                : "Service Temporarily Unavailable"}
-            </h3>
-            <p className="text-muted-foreground mb-4">
-              {language === "uk"
-                ? "Сервіс оплати LiqPay тимчасово недоступний. Спробуйте ще раз через кілька хвилин."
-                : "LiqPay payment service is temporarily unavailable. Please try again in a few minutes."}
-            </p>
-            <Button onClick={retryPayment} className="mb-2">
-              {language === "uk" ? "Спробувати ще раз" : "Try Again"}
-            </Button>
           </div>
         ) : widgetLoading ? (
-          <div className="text-center text-muted-foreground">
-            <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
-            <p>
-              {language === "uk"
-                ? "Завантаження форми оплати..."
-                : "Loading payment form..."}
-            </p>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center text-muted-foreground">
+              <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
+              <p className="text-center">
+                {language === "uk"
+                  ? "Завантаження форми оплати..."
+                  : "Loading payment form..."}
+              </p>
+            </div>
           </div>
         ) : null}
       </div>
@@ -469,6 +539,60 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
             ? "Дякуємо за покупку! Посилання на курс буде відправлено на вашу пошту протягом кількох хвилин."
             : "Thank you for your purchase! Course link will be sent to your email within a few minutes."}
         </p>
+
+        {/* Loading Telegram Link */}
+        {isLoadingTelegram && (
+          <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-4">
+            <div className="flex items-center justify-center space-x-2 mb-2">
+              <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+              <p className="text-blue-800 font-medium">
+                {language === "uk"
+                  ? "Отримання посилання на курс..."
+                  : "Getting course link..."}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Countdown and Redirect */}
+        {!isLoadingTelegram && telegramUrl && redirectCountdown > 0 && (
+          <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-4">
+            <p className="text-blue-800 font-medium mb-2">
+              {language === "uk"
+                ? "🚀 Перенаправлення в Telegram через:"
+                : "🚀 Redirecting to Telegram in:"}
+            </p>
+            <div className="text-3xl font-bold text-blue-600 mb-3">
+              {redirectCountdown}
+            </div>
+            <Button
+              onClick={() => window.open(telegramUrl, "_blank")}
+              className="bg-blue-600 hover:bg-blue-700"
+              size="sm"
+            >
+              {language === "uk" ? "Перейти зараз" : "Go Now"}
+            </Button>
+          </div>
+        )}
+
+        {/* Redirect completed */}
+        {!isLoadingTelegram && telegramUrl && redirectCountdown === 0 && (
+          <div className="bg-green-50 border border-green-200 p-4 rounded-lg mb-4">
+            <p className="text-green-800 font-medium mb-2">
+              {language === "uk"
+                ? "✅ Перенаправлено в Telegram!"
+                : "✅ Redirected to Telegram!"}
+            </p>
+            <Button
+              onClick={() => window.open(telegramUrl, "_blank")}
+              className="bg-green-600 hover:bg-green-700"
+              size="sm"
+            >
+              {language === "uk" ? "Відкрити знову" : "Open Again"}
+            </Button>
+          </div>
+        )}
+
         {orderId && (
           <div className="bg-muted/50 p-3 rounded-lg">
             <p className="text-sm text-muted-foreground">
