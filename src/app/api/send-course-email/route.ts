@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
       if (type === "basic") {
         return lang === "uk"
           ? `
-          <h3 style="color: #f57c00; margin-top: 0;">✨ Що на тебе чекає?</h3>
+          <h3 style="color: #f57c00; margin-top: 0;">Що на тебе чекає?</h3>
           <div style="margin: 15px 0;">
             <p style="margin: 8px 0; color: #666;"><strong>✨ Денний макіяж</strong> – легкий, природний, підкреслює твою красу.</p>
             <p style="margin: 8px 0; color: #666;"><strong>✨ Вечірній макіяж з акцентом на очі</strong> – стрілки, виразний, ефектний, ідеальний для особливих подій.</p>
