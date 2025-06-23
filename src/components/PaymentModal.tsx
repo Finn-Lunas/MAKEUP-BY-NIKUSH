@@ -58,7 +58,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
   } | null>(null);
   const [paymentError, setPaymentError] = useState<boolean>(false);
   const [widgetLoading, setWidgetLoading] = useState<boolean>(false);
-  const [redirectCountdown, setRedirectCountdown] = useState<number>(3);
+  const [redirectCountdown, setRedirectCountdown] = useState<number>(5);
   const [telegramUrl, setTelegramUrl] = useState<string>("");
   const [isLoadingTelegram, setIsLoadingTelegram] = useState<boolean>(false);
 
@@ -199,7 +199,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
 
   const handlePaymentSuccess = async () => {
     setStep("success");
-    setRedirectCountdown(3); // Reset countdown
+    setRedirectCountdown(5); // Reset countdown
     setIsLoadingTelegram(true);
 
     console.log("Payment successful - getting telegram link");
@@ -280,7 +280,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
     setPaymentData(null);
     setPaymentError(false);
     setWidgetLoading(false);
-    setRedirectCountdown(3); // Reset countdown
+    setRedirectCountdown(5); // Reset countdown
     setTelegramUrl("");
     setIsLoadingTelegram(false);
     onClose();
@@ -541,15 +541,15 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
   );
 
   const renderSuccessStep = () => (
-    <div className="text-center space-y-6">
-      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-        <CheckCircle className="w-8 h-8 text-green-600" />
+    <div className="text-center space-y-4">
+      <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+        <CheckCircle className="w-7 h-7 text-green-600" />
       </div>
       <div>
-        <h3 className="text-lg font-semibold mb-2">
+        <h3 className="text-base font-semibold mb-2">
           {language === "uk" ? "🎉 Оплата успішна!" : "🎉 Payment Successful!"}
         </h3>
-        <p className="text-muted-foreground mb-4">
+        <p className="text-sm text-muted-foreground mb-3">
           {language === "uk"
             ? "Дякуємо за покупку! Посилання на курс буде відправлено на вашу пошту протягом кількох хвилин."
             : "Thank you for your purchase! Course link will be sent to your email within a few minutes."}
@@ -557,10 +557,10 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
 
         {/* Loading Telegram Link */}
         {isLoadingTelegram && (
-          <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-4">
-            <div className="flex items-center justify-center space-x-2 mb-2">
+          <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg mb-3">
+            <div className="flex items-center justify-center space-x-2 mb-1">
               <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-              <p className="text-blue-800 font-medium">
+              <p className="text-sm text-blue-800 font-medium">
                 {language === "uk"
                   ? "Отримання посилання на курс..."
                   : "Getting course link..."}
@@ -571,16 +571,16 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
 
         {/* Countdown and Redirect */}
         {!isLoadingTelegram && telegramUrl && redirectCountdown > 0 && (
-          <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-4">
-            <p className="text-blue-800 font-medium mb-2">
+          <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg mb-3">
+            <p className="text-sm text-blue-800 font-medium mb-2">
               {language === "uk"
                 ? "🚀 Перенаправлення в Telegram через:"
                 : "🚀 Redirecting to Telegram in:"}
             </p>
-            <div className="text-3xl font-bold text-blue-600 mb-3">
+            <div className="text-2xl font-bold text-blue-600 mb-2">
               {redirectCountdown}
             </div>
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Button
                 onClick={handleManualRedirect}
                 className="bg-blue-600 hover:bg-blue-700 w-full"
@@ -599,11 +599,11 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
 
         {/* Redirect completed */}
         {!isLoadingTelegram && telegramUrl && redirectCountdown === 0 && (
-          <div className="bg-green-50 border border-green-200 p-4 rounded-lg mb-4">
-            <p className="text-green-800 font-medium mb-2">
+          <div className="bg-green-50 border border-green-200 p-3 rounded-lg mb-3">
+            <p className="text-sm text-green-800 font-medium mb-2">
               {language === "uk" ? "✅ Готово до переходу!" : "✅ Ready to go!"}
             </p>
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Button
                 onClick={handleManualRedirect}
                 className="bg-green-600 hover:bg-green-700 w-full"
@@ -623,11 +623,11 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         )}
 
         {orderId && (
-          <div className="bg-muted/50 p-3 rounded-lg">
-            <p className="text-sm text-muted-foreground">
+          <div className="bg-muted/50 p-2 rounded-lg">
+            <p className="text-xs text-muted-foreground">
               {language === "uk" ? "Номер замовлення:" : "Order ID:"}
             </p>
-            <p className="font-mono text-sm break-all">{orderId}</p>
+            <p className="font-mono text-xs break-all">{orderId}</p>
           </div>
         )}
       </div>
