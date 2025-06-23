@@ -422,27 +422,19 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         </div>
       </div>
 
-      <div className="bg-muted/50 p-4 rounded-lg">
-        <p className="text-sm text-muted-foreground">
-          {language === "uk"
-            ? "Після успішної оплати на вказану email адресу буде відправлено посилання на курс."
-            : "After successful payment, a course link will be sent to the specified email address."}
-        </p>
-      </div>
-
-      <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg">
+      <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
         <div className="flex items-start space-x-2">
           <div className="text-blue-600 mt-0.5">💡</div>
           <div>
-            <p className="text-sm text-blue-800 font-medium mb-1">
+            <p className="text-sm text-blue-800 font-medium mb-2">
               {language === "uk"
-                ? "Автоматичний перехід в Telegram"
-                : "Automatic Telegram redirect"}
+                ? "Що відбудеться після оплати:"
+                : "What happens after payment:"}
             </p>
             <p className="text-xs text-blue-700">
               {language === "uk"
-                ? "Після успішної оплати ви будете автоматично перенаправлені в Telegram канал з курсом."
-                : "After successful payment you'll be automatically redirected to the Telegram channel with the course."}
+                ? "Після оплати вас автоматично перенаправить в Telegram канал з курсом, та на вказану email адресу буде відправлено підтвердження оплати."
+                : "After payment you'll be automatically redirected to the Telegram channel with the course, and a payment confirmation will be sent to your email address."}
             </p>
           </div>
         </div>
