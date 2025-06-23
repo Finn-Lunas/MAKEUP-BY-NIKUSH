@@ -474,7 +474,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
             <p className="text-sm text-muted-foreground">
               {language === "uk" ? "Номер замовлення:" : "Order ID:"}
             </p>
-            <p className="font-mono text-sm">{orderId}</p>
+            <p className="font-mono text-sm break-all">{orderId}</p>
           </div>
         )}
       </div>
