@@ -70,10 +70,7 @@ export async function POST(request: NextRequest) {
         telegramLink: process.env.TELEGRAM_COURSE_LINK,
         title:
           language === "uk" ? "Базовий курс макіяжу" : "Basic Makeup Course",
-        description:
-          language === "uk"
-            ? "Основи макіяжу для початківців"
-            : "Makeup basics for beginners",
+        description: language === "uk" ? "Основи макіяжу" : "Makeup basics",
       },
       advanced: {
         telegramLink: process.env.TELEGRAM_COURSE_LINK,
@@ -132,7 +129,7 @@ export async function POST(request: NextRequest) {
       } else {
         return lang === "uk"
           ? `
-          <h3 style="color: #f57c00; margin-top: 0;">✨ Що на тебе чекає?</h3>
+          <h3 style="color: #f57c00; margin-top: 0;">Що на тебе чекає?</h3>
           <div style="margin: 15px 0;">
             <p style="margin: 8px 0; color: #666;"><strong>✨ Денний макіяж</strong> – легкий, природний, підкреслює твою красу.</p>
             <p style="margin: 8px 0; color: #666;"><strong>✨ Вечірній макіяж з акцентом на очі</strong> – стрілки, виразний, ефектний, ідеальний для особливих подій.</p>
@@ -145,7 +142,7 @@ export async function POST(request: NextRequest) {
           </div>
         `
           : `
-          <h3 style="color: #f57c00; margin-top: 0;">✨ What awaits you?</h3>
+          <h3 style="color: #f57c00; margin-top: 0;">What awaits you?</h3>
           <div style="margin: 15px 0;">
             <p style="margin: 8px 0; color: #666;"><strong>✨ Day makeup</strong> – light, natural, highlights your beauty.</p>
             <p style="margin: 8px 0; color: #666;"><strong>✨ Evening makeup with eye focus</strong> - eyeliner, expressive, spectacular, perfect for special events.</p>
@@ -166,7 +163,7 @@ export async function POST(request: NextRequest) {
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
         <div style="text-align: center; margin-bottom: 30px;">
           <h1 style="color: #e91e63; margin-bottom: 10px;">🎉 Вітаємо з покупкою!</h1>
-          <p style="font-size: 18px; color: #666;">Дякуємо за довіру до нашої школи макіяжу</p>
+          <p style="font-size: 18px; color: #666;">Дякуємо за довіру</p>
         </div>
         
         <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
@@ -205,7 +202,7 @@ export async function POST(request: NextRequest) {
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
         <div style="text-align: center; margin-bottom: 30px;">
           <h1 style="color: #e91e63; margin-bottom: 10px;">🎉 Congratulations on your purchase!</h1>
-          <p style="font-size: 18px; color: #666;">Thank you for trusting our makeup school</p>
+          <p style="font-size: 18px; color: #666;">Thank you for your trust</p>
         </div>
         
         <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
