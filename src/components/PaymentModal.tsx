@@ -246,8 +246,8 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
       interval = setInterval(() => {
         setRedirectCountdown((prev) => {
           if (prev <= 1) {
-            // Redirect to Telegram
-            window.open(telegramUrl, "_blank");
+            // Direct redirect to Telegram (no popup)
+            window.location.href = telegramUrl;
             return 0;
           }
           return prev - 1;
@@ -261,6 +261,11 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
       }
     };
   }, [step, redirectCountdown, telegramUrl, isLoadingTelegram]);
+
+  const handleManualRedirect = () => {
+    // Direct redirect to Telegram
+    window.location.href = telegramUrl;
+  };
 
   const handleClose = () => {
     // Clear LiqPay widget
@@ -425,6 +430,24 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         </p>
       </div>
 
+      <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg">
+        <div className="flex items-start space-x-2">
+          <div className="text-blue-600 mt-0.5">💡</div>
+          <div>
+            <p className="text-sm text-blue-800 font-medium mb-1">
+              {language === "uk"
+                ? "Автоматичний перехід в Telegram"
+                : "Automatic Telegram redirect"}
+            </p>
+            <p className="text-xs text-blue-700">
+              {language === "uk"
+                ? "Після успішної оплати ви будете автоматично перенаправлені в Telegram канал з курсом."
+                : "After successful payment you'll be automatically redirected to the Telegram channel with the course."}
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div className="flex space-x-3">
         <Button variant="outline" onClick={handleClose} className="flex-1">
           {language === "uk" ? "Скасувати" : "Cancel"}
@@ -565,13 +588,20 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
             <div className="text-3xl font-bold text-blue-600 mb-3">
               {redirectCountdown}
             </div>
-            <Button
-              onClick={() => window.open(telegramUrl, "_blank")}
-              className="bg-blue-600 hover:bg-blue-700"
-              size="sm"
-            >
-              {language === "uk" ? "Перейти зараз" : "Go Now"}
-            </Button>
+            <div className="space-y-2">
+              <Button
+                onClick={handleManualRedirect}
+                className="bg-blue-600 hover:bg-blue-700 w-full"
+                size="sm"
+              >
+                {language === "uk" ? "Перейти зараз" : "Go Now"}
+              </Button>
+              <p className="text-xs text-blue-600 text-center">
+                {language === "uk"
+                  ? "Або зачекайте на автоматичне перенаправлення"
+                  : "Or wait for automatic redirect"}
+              </p>
+            </div>
           </div>
         )}
 
@@ -579,17 +609,24 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         {!isLoadingTelegram && telegramUrl && redirectCountdown === 0 && (
           <div className="bg-green-50 border border-green-200 p-4 rounded-lg mb-4">
             <p className="text-green-800 font-medium mb-2">
-              {language === "uk"
-                ? "✅ Перенаправлено в Telegram!"
-                : "✅ Redirected to Telegram!"}
+              {language === "uk" ? "✅ Готово до переходу!" : "✅ Ready to go!"}
             </p>
-            <Button
-              onClick={() => window.open(telegramUrl, "_blank")}
-              className="bg-green-600 hover:bg-green-700"
-              size="sm"
-            >
-              {language === "uk" ? "Відкрити знову" : "Open Again"}
-            </Button>
+            <div className="space-y-2">
+              <Button
+                onClick={handleManualRedirect}
+                className="bg-green-600 hover:bg-green-700 w-full"
+                size="sm"
+              >
+                {language === "uk"
+                  ? "Відкрити Telegram канал"
+                  : "Open Telegram Channel"}
+              </Button>
+              <p className="text-xs text-green-600 text-center">
+                {language === "uk"
+                  ? "Натисніть кнопку для переходу в Telegram канал"
+                  : "Click the button to go to Telegram channel"}
+              </p>
+            </div>
           </div>
         )}
 
