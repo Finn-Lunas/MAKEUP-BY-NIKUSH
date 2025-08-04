@@ -35,8 +35,37 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
     },
   };
 
-  const handlePaymentSuccess = async (orderId: string) => {
+  const handlePaymentSuccess = async (orderId: string, paymentData?: any) => {
     console.log("🎉 Payment successful! Order ID:", orderId);
+    console.log("📧 Payment data received:", paymentData);
+
+    // Try to send email directly from frontend as fallback
+    if (paymentData && paymentData.email) {
+      try {
+        console.log("📧 Sending email directly from frontend...");
+        const emailResponse = await fetch("/api/send-course-email", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            customerEmail: paymentData.email,
+            customerPhone: paymentData.phone,
+            courseType: orderId.split("_")[1], // Extract from order ID
+            orderId: orderId,
+            language: language,
+          }),
+        });
+
+        if (emailResponse.ok) {
+          console.log("✅ Email sent successfully from frontend!");
+        } else {
+          console.error("❌ Failed to send email from frontend");
+        }
+      } catch (error) {
+        console.error("💥 Error sending email from frontend:", error);
+      }
+    }
 
     // Try to get telegram link and redirect
     try {
@@ -123,7 +152,7 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
             function (response: any) {
               // Payment approved
               console.log("✅ Payment approved:", response);
-              handlePaymentSuccess(paymentData.orderId);
+              handlePaymentSuccess(paymentData.orderId, response);
             },
             function (response: any) {
               // Payment declined
@@ -145,6 +174,21 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
               handlePaymentSuccess(paymentData.orderId);
             } else if (event.data === "WfpWidgetEventDeclined") {
               console.error("Payment declined. Please try again.");
+            } else if (
+              typeof event.data === "object" &&
+              event.data.transactionStatus === "Approved"
+            ) {
+              // Handle detailed payment data from WayForPay
+              console.log(
+                "📧 Payment details received from WayForPay:",
+                event.data
+              );
+              handlePaymentSuccess(paymentData.orderId, {
+                email: event.data.email,
+                phone: event.data.phone,
+                amount: event.data.amount,
+                currency: event.data.currency,
+              });
             }
           };
 
