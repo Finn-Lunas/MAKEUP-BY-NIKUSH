@@ -36,9 +36,56 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
     },
   };
 
-  const handlePaymentSuccess = async (orderId: string) => {
+  const sendCourseEmail = async (
+    email: string,
+    phone: string,
+    orderId: string
+  ) => {
+    try {
+      console.log("📧 Sending course access email to:", email);
+      const emailResponse = await fetch("/api/send-course-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          customerEmail: email,
+          customerPhone: phone,
+          courseType: orderId.split("_")[1],
+          orderId: orderId,
+          language: language,
+        }),
+      });
+
+      if (emailResponse.ok) {
+        console.log("✅ Email sent successfully!");
+        return true;
+      } else {
+        console.error("❌ Failed to send email");
+        return false;
+      }
+    } catch (error) {
+      console.error("💥 Error sending email:", error);
+      return false;
+    }
+  };
+
+  const handlePaymentSuccess = async (orderId: string, paymentData?: any) => {
     console.log("🎉 Payment successful! Order ID:", orderId);
-    console.log("📧 Email will be sent via callback to serviceUrl");
+
+    // Send email immediately if we have payment data with email
+    if (paymentData && paymentData.email) {
+      console.log("📧 Found email in payment data, sending email immediately");
+      await sendCourseEmail(
+        paymentData.email,
+        paymentData.phone || "",
+        orderId
+      );
+    } else {
+      console.log(
+        "📧 No email in payment data, email will be sent via callback"
+      );
+    }
 
     setIsProcessing(false);
 
@@ -127,7 +174,7 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
               // Payment approved
               console.log("✅ Payment approved:", response);
               console.log("📧 Email will be sent automatically via callback");
-              handlePaymentSuccess(paymentData.orderId);
+              handlePaymentSuccess(paymentData.orderId, response);
             },
             function (response: any) {
               // Payment declined
@@ -148,7 +195,7 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
 
             if (event.data === "WfpWidgetEventApproved") {
               console.log("📧 Email will be sent automatically via callback");
-              handlePaymentSuccess(paymentData.orderId);
+              handlePaymentSuccess(paymentData.orderId, event.data);
             } else if (event.data === "WfpWidgetEventDeclined") {
               console.error("Payment declined. Please try again.");
               setIsProcessing(false);
@@ -162,7 +209,7 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
                 event.data
               );
               console.log("📧 Email will be sent automatically via callback");
-              handlePaymentSuccess(paymentData.orderId);
+              handlePaymentSuccess(paymentData.orderId, event.data);
             }
           };
 
