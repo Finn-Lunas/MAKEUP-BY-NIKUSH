@@ -17,6 +17,7 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
 }) => {
   const { language } = useLanguage();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentProcessed, setPaymentProcessed] = useState<string | null>(null);
 
   // Prices and course details
   const courseData = {
@@ -93,7 +94,14 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
   };
 
   const handlePaymentSuccess = async (orderId: string, paymentData?: any) => {
+    // Prevent double execution for the same order
+    if (paymentProcessed === orderId) {
+      console.log("🔄 Payment already processed for order:", orderId);
+      return;
+    }
+
     console.log("🎉 Payment successful! Order ID:", orderId);
+    setPaymentProcessed(orderId);
 
     // Send email immediately if we have payment data with email
     if (paymentData && paymentData.email) {
@@ -143,6 +151,7 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
 
   const handlePayment = async () => {
     setIsProcessing(true);
+    setPaymentProcessed(null); // Reset payment processed state for new payment
 
     try {
       // Create payment
