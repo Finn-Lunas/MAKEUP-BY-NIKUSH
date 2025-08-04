@@ -66,6 +66,7 @@ export async function POST(request: NextRequest) {
       language: language === "uk" ? "UA" : "EN",
       serviceUrl: `${baseUrl}/api/wayforpay/callback`,
       returnUrl: `${baseUrl}/payment/success?order_id=${orderId}`,
+      apiVersion: 2, // Enable extended data in callback
     };
 
     // Generate signature according to WayForPay documentation

@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     const contentType = request.headers.get("content-type");
     if (contentType?.includes("application/json")) {
       body = await request.json();
-      console.log("✅ Parsed as JSON:", body);
+      console.log("✅ Parsed as JSON:", JSON.stringify(body, null, 2));
     } else {
       // Handle form-data
       const formData = await request.formData();
@@ -23,8 +23,12 @@ export async function POST(request: NextRequest) {
       for (const [key, value] of formData.entries()) {
         body[key] = value;
       }
-      console.log("✅ Parsed as FormData:", body);
+      console.log("✅ Parsed as FormData:", JSON.stringify(body, null, 2));
     }
+
+    console.log("🔍 ALL CALLBACK FIELDS:");
+    console.log("Raw body keys:", Object.keys(body));
+    console.log("Raw body values:", JSON.stringify(body, null, 2));
 
     const {
       merchantAccount,
@@ -37,12 +41,16 @@ export async function POST(request: NextRequest) {
       phone, // Standard field name from callback
       clientEmail, // Alternative field name
       clientPhone, // Alternative field name
+      deliveryEmail, // Additional field
+      deliveryPhone, // Additional field
       language,
     } = body;
 
-    // Use email/phone with fallback to clientEmail/clientPhone
-    const customerEmail = email || clientEmail;
-    const customerPhone = phone || clientPhone;
+    // Try multiple field names for email and phone
+    const customerEmail =
+      email || clientEmail || deliveryEmail || body.Email || body.ClientEmail;
+    const customerPhone =
+      phone || clientPhone || deliveryPhone || body.Phone || body.ClientPhone;
 
     console.log("📋 Extracted payment data:", {
       merchantAccount,
@@ -55,6 +63,22 @@ export async function POST(request: NextRequest) {
       language,
       signatureReceived: merchantSignature ? "***PROVIDED***" : "❌ MISSING",
     });
+
+    console.log("🔍 EMAIL FIELD ANALYSIS:");
+    console.log("- email:", email || "❌ not found");
+    console.log("- clientEmail:", clientEmail || "❌ not found");
+    console.log("- deliveryEmail:", deliveryEmail || "❌ not found");
+    console.log("- body.Email:", body.Email || "❌ not found");
+    console.log("- body.ClientEmail:", body.ClientEmail || "❌ not found");
+    console.log("- Final customerEmail:", customerEmail || "❌ NONE FOUND");
+
+    console.log("🔍 PHONE FIELD ANALYSIS:");
+    console.log("- phone:", phone || "❌ not found");
+    console.log("- clientPhone:", clientPhone || "❌ not found");
+    console.log("- deliveryPhone:", deliveryPhone || "❌ not found");
+    console.log("- body.Phone:", body.Phone || "❌ not found");
+    console.log("- body.ClientPhone:", body.ClientPhone || "❌ not found");
+    console.log("- Final customerPhone:", customerPhone || "❌ NONE FOUND");
 
     // Use merchant account from environment
     const expectedMerchantAccount =
