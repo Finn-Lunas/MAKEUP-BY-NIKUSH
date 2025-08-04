@@ -4,14 +4,7 @@ import crypto from "crypto";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const {
-      courseType,
-      language,
-      price,
-      description,
-      customerEmail = "customer@example.com", // Optional, will be collected by WayForPay
-      customerPhone = "+380000000000", // Optional, will be collected by WayForPay
-    } = body;
+    const { courseType, language, price, description } = body;
 
     if (!courseType || !price || !description) {
       return NextResponse.json(

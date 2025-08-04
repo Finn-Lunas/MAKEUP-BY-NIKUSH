@@ -9,7 +9,6 @@ import enTranslations from "../translations/en.json";
 import WayForPayButton from "../components/WayForPayButton";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Sheet,
   SheetContent,
@@ -31,9 +30,7 @@ import {
   Phone,
   Mail,
   Menu,
-  X,
   Palette,
-  MessageCircle,
   Heart,
   Play,
   Image as ImageIcon,

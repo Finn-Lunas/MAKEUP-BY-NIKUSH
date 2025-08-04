@@ -11,8 +11,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    const { customerEmail, customerPhone, courseType, orderId, language } =
-      body;
+    const { customerEmail, courseType, orderId, language } = body;
 
     if (!customerEmail || !courseType || !orderId) {
       return NextResponse.json(
