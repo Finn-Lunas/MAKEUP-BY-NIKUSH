@@ -6,7 +6,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useLanguage } from "../contexts/LanguageContext";
 import ukTranslations from "../translations/uk.json";
 import enTranslations from "../translations/en.json";
-import LiqPayButton from "../components/LiqPayButton";
+import WayForPayButton from "../components/WayForPayButton";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -595,12 +595,12 @@ export default function Home() {
                 <p className="text-muted-foreground text-sm mb-4">
                   {t("courses.basic.description")}
                 </p>
-                <LiqPayButton
+                <WayForPayButton
                   courseType="basic"
                   className="w-full bg-primary hover:bg-accent text-primary-foreground mb-2"
                 >
                   {t("courses.basic.cta")}
-                </LiqPayButton>
+                </WayForPayButton>
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button variant="outline" className="w-full">
@@ -641,12 +641,12 @@ export default function Home() {
                         </p>
                       </div>
                       <div className="pt-4">
-                        <LiqPayButton
+                        <WayForPayButton
                           courseType="basic"
                           className="w-full bg-primary hover:bg-accent text-primary-foreground"
                         >
                           {t("courses.basic.cta")}
-                        </LiqPayButton>
+                        </WayForPayButton>
                       </div>
                     </div>
                   </DialogContent>
@@ -694,12 +694,12 @@ export default function Home() {
                 <p className="text-muted-foreground text-sm mb-4">
                   {t("courses.advanced.description")}
                 </p>
-                <LiqPayButton
+                <WayForPayButton
                   courseType="advanced"
                   className="w-full bg-primary hover:bg-accent text-primary-foreground mb-2"
                 >
                   {t("courses.advanced.cta")}
-                </LiqPayButton>
+                </WayForPayButton>
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button variant="outline" className="w-full">
@@ -735,12 +735,12 @@ export default function Home() {
                         </ul>
                       </div>
                       <div className="pt-4">
-                        <LiqPayButton
+                        <WayForPayButton
                           courseType="advanced"
                           className="w-full bg-primary hover:bg-accent text-primary-foreground"
                         >
                           {t("courses.advanced.cta")}
-                        </LiqPayButton>
+                        </WayForPayButton>
                       </div>
                     </div>
                   </DialogContent>
