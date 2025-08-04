@@ -4,16 +4,9 @@ import crypto from "crypto";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const {
-      courseType,
-      language,
-      price,
-      description,
-      customerEmail,
-      customerPhone,
-    } = body;
+    const { courseType, language, price, description } = body;
 
-    if (!courseType || !price || !description || !customerEmail) {
+    if (!courseType || !price || !description) {
       return NextResponse.json(
         { error: "Missing required parameters" },
         { status: 400 }
@@ -49,8 +42,6 @@ export async function POST(request: NextRequest) {
     console.log("Using merchant account:", merchantAccount);
     console.log("Base URL:", baseUrl);
     console.log("Merchant domain:", merchantDomainName);
-    console.log("Customer email:", customerEmail);
-    console.log("Customer phone:", customerPhone);
     console.log("=== End Environment Check ===");
 
     if (!merchantAccount || !merchantSecretKey) {
@@ -75,8 +66,6 @@ export async function POST(request: NextRequest) {
       language: language === "uk" ? "UA" : "EN",
       serviceUrl: `${baseUrl}/api/wayforpay/callback`,
       returnUrl: `${baseUrl}/payment/success?order_id=${orderId}`,
-      clientEmail: customerEmail,
-      clientPhone: customerPhone || "",
     };
 
     // Generate signature according to WayForPay documentation

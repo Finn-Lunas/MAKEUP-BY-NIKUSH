@@ -33,10 +33,16 @@ export async function POST(request: NextRequest) {
       amount,
       currency,
       merchantSignature,
-      clientEmail,
-      clientPhone,
+      email, // Standard field name from callback
+      phone, // Standard field name from callback
+      clientEmail, // Alternative field name
+      clientPhone, // Alternative field name
       language,
     } = body;
+
+    // Use email/phone with fallback to clientEmail/clientPhone
+    const customerEmail = email || clientEmail;
+    const customerPhone = phone || clientPhone;
 
     console.log("📋 Extracted payment data:", {
       merchantAccount,
@@ -44,13 +50,13 @@ export async function POST(request: NextRequest) {
       transactionStatus,
       amount,
       currency,
-      clientEmail: clientEmail ? "***PROVIDED***" : "❌ MISSING",
-      clientPhone: clientPhone ? "***PROVIDED***" : "❌ MISSING",
+      customerEmail: customerEmail ? "***PROVIDED***" : "❌ MISSING",
+      customerPhone: customerPhone ? "***PROVIDED***" : "❌ MISSING",
       language,
       signatureReceived: merchantSignature ? "***PROVIDED***" : "❌ MISSING",
     });
 
-    // Use test merchant account if not in production
+    // Use merchant account from environment
     const expectedMerchantAccount =
       process.env.WAYFORPAY_MERCHANT_ACCOUNT || "test_merch_n1";
 
@@ -129,15 +135,16 @@ export async function POST(request: NextRequest) {
           amount,
           currency,
           status: transactionStatus,
-          customerEmail: clientEmail,
-          customerPhone: clientPhone,
+          customerEmail,
+          customerPhone,
         }
       );
 
-      if (!clientEmail) {
+      if (!customerEmail) {
         console.error(
           "❌ Customer email not found in payment data - cannot send course access"
         );
+        console.error("❌ Available fields in callback:", Object.keys(body));
         return NextResponse.json({
           orderReference,
           status: "accept",
@@ -148,32 +155,29 @@ export async function POST(request: NextRequest) {
       // Send course access email
       try {
         console.log("📧 Attempting to send course access email...");
-        console.log("Email request data:", {
-          customerEmail: clientEmail,
-          customerPhone: clientPhone,
+        console.log("📧 Email request data:", {
+          customerEmail,
+          customerPhone,
           courseType,
           orderId: orderReference,
           language: language === "UA" ? "uk" : "en",
         });
 
-        const emailResponse = await fetch(
-          `${
-            process.env.NEXT_PUBLIC_BASE_URL || request.nextUrl.origin
-          }/api/send-course-email`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              customerEmail: clientEmail,
-              customerPhone: clientPhone,
-              courseType,
-              orderId: orderReference,
-              language: language === "UA" ? "uk" : "en",
-            }),
-          }
-        );
+        const baseUrl =
+          process.env.NEXT_PUBLIC_BASE_URL || request.nextUrl.origin;
+        const emailResponse = await fetch(`${baseUrl}/api/send-course-email`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            customerEmail,
+            customerPhone,
+            courseType,
+            orderId: orderReference,
+            language: language === "UA" ? "uk" : "en",
+          }),
+        });
 
         console.log("📬 Email API response status:", emailResponse.status);
 
@@ -182,7 +186,7 @@ export async function POST(request: NextRequest) {
           console.log("📬 Email API response body:", emailResult);
           console.log(
             "✅ Course access email sent successfully to:",
-            clientEmail
+            customerEmail
           );
         } else {
           const errorText = await emailResponse.text();
