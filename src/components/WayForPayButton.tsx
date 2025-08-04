@@ -43,29 +43,51 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
   ) => {
     try {
       console.log("📧 Sending course access email to:", email);
+      console.log("📧 Phone:", phone);
+      console.log("📧 Order ID:", orderId);
+      console.log("📧 Language:", language);
+
+      const emailData = {
+        customerEmail: email,
+        customerPhone: phone,
+        courseType: orderId.split("_")[1],
+        orderId: orderId,
+        language: language,
+      };
+
+      console.log("📧 Email request data:", emailData);
+      console.log("📧 Making request to /api/send-course-email");
+
       const emailResponse = await fetch("/api/send-course-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          customerEmail: email,
-          customerPhone: phone,
-          courseType: orderId.split("_")[1],
-          orderId: orderId,
-          language: language,
-        }),
+        body: JSON.stringify(emailData),
       });
+
+      console.log("📬 Email API response status:", emailResponse.status);
+      console.log("📬 Email API response headers:", [
+        ...emailResponse.headers.entries(),
+      ]);
+
+      const responseText = await emailResponse.text();
+      console.log("📬 Email API response body:", responseText);
 
       if (emailResponse.ok) {
         console.log("✅ Email sent successfully!");
         return true;
       } else {
-        console.error("❌ Failed to send email");
+        console.error("❌ Failed to send email. Status:", emailResponse.status);
+        console.error("❌ Response:", responseText);
         return false;
       }
     } catch (error) {
       console.error("💥 Error sending email:", error);
+      console.error(
+        "💥 Error details:",
+        error instanceof Error ? error.stack : "No stack trace"
+      );
       return false;
     }
   };
