@@ -175,6 +175,10 @@
     "instagram": {
       "title": "Instagram"
     },
+    "offer": {
+      "title": "Public Offer",
+      "view": "View"
+    },
     "form": {
       "title": "Write to me",
       "name": "Your name",

@@ -34,6 +34,7 @@ import {
   Heart,
   Play,
   Image as ImageIcon,
+  FileText,
 } from "lucide-react";
 
 export default function Home() {
@@ -1057,7 +1058,7 @@ export default function Home() {
       {/* Contact Section */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <a
               href="tel:+380950704117"
               className="space-y-4 group hover:text-primary transition-colors cursor-pointer"
@@ -1102,6 +1103,22 @@ export default function Home() {
                 @nikush_brows
               </p>
             </a>
+            <a
+              href="/dogovir_oferty.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="space-y-4 group hover:text-primary transition-colors cursor-pointer"
+            >
+              <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto">
+                <FileText className="h-8 w-8 text-primary-foreground" />
+              </div>
+              <h3 className="text-lg font-medium text-foreground group-hover:text-primary transition-colors">
+                {t("contact.offer.title")}
+              </h3>
+              <p className="text-muted-foreground group-hover:text-primary transition-colors">
+                {t("contact.offer.view")}
+              </p>
+            </a>
           </div>
         </div>
       </section>
@@ -1113,6 +1130,16 @@ export default function Home() {
               © 2025 Nikoletta Martynovych | Персональний сайт Ніколетти
               Мартинович
             </p>
+            <div className="mt-2">
+              <a
+                href="/dogovir_oferty.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm underline hover:text-primary"
+              >
+                Договір оферти
+              </a>
+            </div>
           </div>
         </div>
       </footer>
