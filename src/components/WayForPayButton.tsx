@@ -49,8 +49,8 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
 
     // Hosted payment pages mapping
     const hostedPaymentUrls: Record<string, string> = {
-      basic: "https://secure.wayforpay.com/payment/basic-course-package1",
-      advanced: "https://secure.wayforpay.com/payment/premium-course-package1",
+      basic: "https://secure.wayforpay.com/payment/basic-course-package",
+      advanced: "https://secure.wayforpay.com/payment/premium-course-package",
     };
 
     const directUrl = hostedPaymentUrls[courseType];
