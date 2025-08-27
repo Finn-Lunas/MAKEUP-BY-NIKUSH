@@ -37,88 +37,21 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
     },
   };
 
-  const sendCourseEmail = async (
-    email: string,
-    phone: string,
-    orderId: string
-  ) => {
-    try {
-      console.log("📧 Sending course access email to:", email);
-      console.log("📧 Phone:", phone);
-      console.log("📧 Order ID:", orderId);
-      console.log("📧 Language:", language);
-
-      const emailData = {
-        customerEmail: email,
-        customerPhone: phone,
-        courseType: orderId.split("_")[1],
-        orderId: orderId,
-        language: language,
-      };
-
-      console.log("📧 Email request data:", emailData);
-      console.log("📧 Making request to /api/send-course-email");
-
-      const emailResponse = await fetch("/api/send-course-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(emailData),
-      });
-
-      console.log("📬 Email API response status:", emailResponse.status);
-      console.log("📬 Email API response headers:", [
-        ...emailResponse.headers.entries(),
-      ]);
-
-      const responseText = await emailResponse.text();
-      console.log("📬 Email API response body:", responseText);
-
-      if (emailResponse.ok) {
-        console.log("✅ Email sent successfully!");
-        return true;
-      } else {
-        console.error("❌ Failed to send email. Status:", emailResponse.status);
-        console.error("❌ Response:", responseText);
-        return false;
-      }
-    } catch (error) {
-      console.error("💥 Error sending email:", error);
-      console.error(
-        "💥 Error details:",
-        error instanceof Error ? error.stack : "No stack trace"
-      );
-      return false;
-    }
-  };
-
   const handlePaymentSuccess = async (orderId: string, paymentData?: any) => {
     // Prevent double execution for the same order
     if (paymentProcessed === orderId) {
       console.log("🔄 Payment already processed for order:", orderId);
       return;
     }
-
+    
     console.log("🎉 Payment successful! Order ID:", orderId);
     setPaymentProcessed(orderId);
-
-    // Send email immediately if we have payment data with email
-    if (paymentData && paymentData.email) {
-      console.log("📧 Found email in payment data, sending email immediately");
-      await sendCourseEmail(
-        paymentData.email,
-        paymentData.phone || "",
-        orderId
-      );
-    } else {
-      console.log(
-        "📧 No email in payment data, email will be sent via callback"
-      );
-    }
-
+    
+    // Do not send emails from frontend. WayForPay callback will handle emails server-side.
+    console.log("📧 Skipping frontend email sending. Email will be sent via WayForPay callback.");
+    
     setIsProcessing(false);
-
+    
     // Redirect to Telegram
     try {
       const response = await fetch("/api/get-telegram-link", {
@@ -137,22 +70,16 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
         }, 1000);
       } else {
         console.error("Failed to get telegram link");
-        console.log(
-          "✅ Payment successful! Course link will be sent to your email."
-        );
       }
     } catch (error) {
       console.error("Error fetching telegram link:", error);
-      console.log(
-        "✅ Payment successful! Course link will be sent to your email."
-      );
     }
   };
 
   const handlePayment = async () => {
     setIsProcessing(true);
     setPaymentProcessed(null); // Reset payment processed state for new payment
-
+    
     try {
       // Create payment
       const response = await fetch("/api/wayforpay/create-payment", {
@@ -174,7 +101,7 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
 
       const paymentData = await response.json();
       console.log("💳 Payment data created:", paymentData);
-
+      
       // Initialize WayForPay widget
       const script = document.createElement("script");
       script.src = "https://secure.wayforpay.com/server/pay-widget.js";
@@ -182,9 +109,9 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
       script.onload = () => {
         try {
           const wayforpay = new (window as any).Wayforpay();
-
+          
           console.log("🚀 Initializing WayForPay widget...");
-
+          
           wayforpay.run(
             {
               merchantAccount: paymentData.merchantAccount,
@@ -223,42 +150,38 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
           // Also listen for postMessage events
           const handleMessage = (event: MessageEvent) => {
             console.log("📬 PostMessage received:", event.data);
-
+            
             if (event.data === "WfpWidgetEventApproved") {
               console.log("📧 Email will be sent automatically via callback");
               handlePaymentSuccess(paymentData.orderId, event.data);
             } else if (event.data === "WfpWidgetEventDeclined") {
               console.error("Payment declined. Please try again.");
               setIsProcessing(false);
-            } else if (
-              typeof event.data === "object" &&
-              event.data.transactionStatus === "Approved"
-            ) {
+            } else if (typeof event.data === 'object' && event.data.transactionStatus === 'Approved') {
               // Handle detailed payment data from WayForPay
-              console.log(
-                "📧 Payment details received from WayForPay:",
-                event.data
-              );
+              console.log("📧 Payment details received from WayForPay:", event.data);
               console.log("📧 Email will be sent automatically via callback");
               handlePaymentSuccess(paymentData.orderId, event.data);
             }
           };
-
+          
           window.addEventListener("message", handleMessage, false);
+          
         } catch (error) {
           console.error("Error initializing WayForPay:", error);
           console.error("Payment system initialization error.");
           setIsProcessing(false);
         }
       };
-
+      
       script.onerror = () => {
         console.error("Failed to load WayForPay script");
         console.error("Payment system loading error.");
         setIsProcessing(false);
       };
-
+      
       document.head.appendChild(script);
+      
     } catch (error) {
       console.error("Payment creation error:", error);
       console.error("Payment creation error. Please try again.");
@@ -267,16 +190,15 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
   };
 
   return (
-    <Button
-      onClick={handlePayment}
+    <Button 
+      onClick={handlePayment} 
       className={className}
       disabled={isProcessing}
     >
-      {isProcessing
-        ? language === "uk"
-          ? "Обробка..."
-          : "Processing..."
-        : children || (language === "uk" ? "Купити" : "Buy")}
+      {isProcessing 
+        ? (language === "uk" ? "Обробка..." : "Processing...") 
+        : (children || (language === "uk" ? "Купити" : "Buy"))
+      }
     </Button>
   );
 };
