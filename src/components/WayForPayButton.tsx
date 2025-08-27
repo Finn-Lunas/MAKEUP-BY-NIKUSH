@@ -3,6 +3,13 @@
 import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { useLanguage } from "../contexts/LanguageContext";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
 
 interface WayForPayButtonProps {
   courseType: "basic" | "advanced";
@@ -18,6 +25,7 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
   const { language } = useLanguage();
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentProcessed, setPaymentProcessed] = useState<string | null>(null);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   // Prices and course details
   const courseData = {
@@ -43,15 +51,17 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
       console.log("🔄 Payment already processed for order:", orderId);
       return;
     }
-    
+
     console.log("🎉 Payment successful! Order ID:", orderId);
     setPaymentProcessed(orderId);
-    
+
     // Do not send emails from frontend. WayForPay callback will handle emails server-side.
-    console.log("📧 Skipping frontend email sending. Email will be sent via WayForPay callback.");
-    
+    console.log(
+      "📧 Skipping frontend email sending. Email will be sent via WayForPay callback."
+    );
+
     setIsProcessing(false);
-    
+
     // Redirect to Telegram
     try {
       const response = await fetch("/api/get-telegram-link", {
@@ -79,7 +89,7 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
   const handlePayment = async () => {
     setIsProcessing(true);
     setPaymentProcessed(null); // Reset payment processed state for new payment
-    
+
     try {
       // Create payment
       const response = await fetch("/api/wayforpay/create-payment", {
@@ -101,7 +111,7 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
 
       const paymentData = await response.json();
       console.log("💳 Payment data created:", paymentData);
-      
+
       // Initialize WayForPay widget
       const script = document.createElement("script");
       script.src = "https://secure.wayforpay.com/server/pay-widget.js";
@@ -109,9 +119,9 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
       script.onload = () => {
         try {
           const wayforpay = new (window as any).Wayforpay();
-          
+
           console.log("🚀 Initializing WayForPay widget...");
-          
+
           wayforpay.run(
             {
               merchantAccount: paymentData.merchantAccount,
@@ -150,38 +160,47 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
           // Also listen for postMessage events
           const handleMessage = (event: MessageEvent) => {
             console.log("📬 PostMessage received:", event.data);
-            
+
             if (event.data === "WfpWidgetEventApproved") {
               console.log("📧 Email will be sent automatically via callback");
               handlePaymentSuccess(paymentData.orderId, event.data);
             } else if (event.data === "WfpWidgetEventDeclined") {
               console.error("Payment declined. Please try again.");
               setIsProcessing(false);
-            } else if (typeof event.data === 'object' && event.data.transactionStatus === 'Approved') {
+            } else if (event.data === "WfpWidgetEventClose") {
+              // User closed the popup – stop processing and re-enable the button
+              console.log("🛑 WayForPay widget closed by user");
+              setIsProcessing(false);
+              setPaymentProcessed(null);
+            } else if (
+              typeof event.data === "object" &&
+              event.data.transactionStatus === "Approved"
+            ) {
               // Handle detailed payment data from WayForPay
-              console.log("📧 Payment details received from WayForPay:", event.data);
+              console.log(
+                "📧 Payment details received from WayForPay:",
+                event.data
+              );
               console.log("📧 Email will be sent automatically via callback");
               handlePaymentSuccess(paymentData.orderId, event.data);
             }
           };
-          
+
           window.addEventListener("message", handleMessage, false);
-          
         } catch (error) {
           console.error("Error initializing WayForPay:", error);
           console.error("Payment system initialization error.");
           setIsProcessing(false);
         }
       };
-      
+
       script.onerror = () => {
         console.error("Failed to load WayForPay script");
         console.error("Payment system loading error.");
         setIsProcessing(false);
       };
-      
+
       document.head.appendChild(script);
-      
     } catch (error) {
       console.error("Payment creation error:", error);
       console.error("Payment creation error. Please try again.");
@@ -190,16 +209,79 @@ const WayForPayButton: React.FC<WayForPayButtonProps> = ({
   };
 
   return (
-    <Button 
-      onClick={handlePayment} 
-      className={className}
-      disabled={isProcessing}
-    >
-      {isProcessing 
-        ? (language === "uk" ? "Обробка..." : "Processing...") 
-        : (children || (language === "uk" ? "Купити" : "Buy"))
-      }
-    </Button>
+    <>
+      <Button
+        onClick={() => setShowConfirm(true)}
+        className={className}
+        disabled={isProcessing}
+      >
+        {isProcessing
+          ? language === "uk"
+            ? "Обробка..."
+            : "Processing..."
+          : children || (language === "uk" ? "Купити" : "Buy")}
+      </Button>
+
+      <Dialog open={showConfirm} onOpenChange={setShowConfirm}>
+        <DialogContent className="sm:max-w-[520px]">
+          <DialogHeader>
+            <DialogTitle>
+              {language === "uk"
+                ? "Підтвердження оплати"
+                : "Payment confirmation"}
+            </DialogTitle>
+            <DialogDescription>
+              {language === "uk"
+                ? "Після успішної оплати вас автоматично перенаправить у Telegram-канал з курсом. Також на вашу пошту прийде чек з посиланням на канал, щоб ви не загубили його."
+                : "After a successful payment you'll be automatically redirected to the Telegram channel with the course. A receipt with the link will also be sent to your email so you don't lose it."}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="mt-2 text-sm text-muted-foreground">
+            <div className="font-medium text-foreground mb-2">
+              {courseData[courseType].title} — {courseData[courseType].price}{" "}
+              {language === "uk" ? "грн" : "UAH"}
+            </div>
+            <ul className="list-disc pl-5 space-y-1">
+              <li>
+                {language === "uk"
+                  ? "Оплата відбувається на захищеній платіжній сторінці WayForPay."
+                  : "Payment is processed on WayForPay's secure payment page."}
+              </li>
+              <li>
+                {language === "uk"
+                  ? "Не закривайте сайт під час оплати — після успіху відбудеться авто-перенаправлення."
+                  : "Please don't close the site during payment — after success you'll be auto-redirected."}
+              </li>
+              <li>
+                {language === "uk"
+                  ? "Квитанція з посиланням на Telegram буде відправлена на вказаний email."
+                  : "A receipt with the Telegram link will be sent to your email."}
+              </li>
+            </ul>
+          </div>
+
+          <div className="mt-6 grid grid-cols-2 gap-3">
+            <Button
+              variant="outline"
+              onClick={() => setShowConfirm(false)}
+              disabled={isProcessing}
+            >
+              {language === "uk" ? "Скасувати" : "Cancel"}
+            </Button>
+            <Button
+              onClick={() => {
+                setShowConfirm(false);
+                handlePayment();
+              }}
+              disabled={isProcessing}
+            >
+              {language === "uk" ? "Перейти до оплати" : "Proceed to payment"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
