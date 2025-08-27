@@ -74,6 +74,7 @@ export const Toast: React.FC<ToastProps> = ({
 };
 
 // Toast Provider/Context
+// eslint-disable-next-line no-unused-vars
 interface ToastContextType {
   showToast: (message: string, type?: "error" | "success" | "info") => void;
 }

@@ -38,19 +38,19 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("language", lang);
   };
 
-  const t = (key: string): string => {
-    const keys = key.split(".");
+  const t = (translationKey: string): string => {
+    const keys = translationKey.split(".");
     let value: Record<string, unknown> | string = translations[language];
 
     for (const k of keys) {
       if (value && typeof value === "object" && k in value) {
         value = value[k] as Record<string, unknown> | string;
       } else {
-        return key; // Return key if translation not found
+        return translationKey; // Return key if translation not found
       }
     }
 
-    return typeof value === "string" ? value : key;
+    return typeof value === "string" ? value : translationKey;
   };
 
   return (
